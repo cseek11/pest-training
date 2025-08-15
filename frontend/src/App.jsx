@@ -264,12 +264,16 @@ export default function App() {
   const [q, setQ] = useState('');
   const [loading, setLoading] = useState(true);
 
+  // Fetch content function for reload
+  const fetchAndSetContent = async () => {
+    setLoading(true);
+    const data = await fetchContent();
+    if (data) setContent(data);
+    setLoading(false);
+  };
+
   useEffect(() => {
-    (async () => {
-      const data = await fetchContent();
-      if (data) setContent(data);
-      setLoading(false);
-    })();
+    fetchAndSetContent();
   }, []);
 
   const filteredFlash = useMemo(() => {
@@ -342,6 +346,17 @@ export default function App() {
         <main className="max-w-6xl mx-auto p-4 grid gap-6">
           {/* Flashcards */}
           <SectionCard icon={BookOpen} title="Flashcards">
+            <div className="flex items-center justify-between mb-2">
+              <span></span>
+              <button
+                className="px-3 py-1 text-xs rounded bg-blue-500 text-white hover:bg-blue-600 transition"
+                onClick={fetchAndSetContent}
+                disabled={loading}
+                aria-label="Reload flashcards"
+              >
+                {loading ? 'Loading…' : 'Reload'}
+              </button>
+            </div>
             {loading ? (
               <p className="text-sm text-gray-600">Loading content…</p>
             ) : (
