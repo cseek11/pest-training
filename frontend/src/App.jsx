@@ -377,6 +377,11 @@ export default function App() {
                 level={level}
               />
               <ModuleQuiz
+                title="Biology"
+                bank={content.categories?.biology || []}
+                level={level}
+              />
+              <ModuleQuiz
                 title="PA: Household & Health"
                 bank={content.categories?.household_health || []}
                 level={level}

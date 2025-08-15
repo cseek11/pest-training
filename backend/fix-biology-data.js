@@ -1,7 +1,7 @@
 const fs = require('fs');
 const path = require('path');
 
-// Function to read and parse CSV file with proper quote handling
+// Function to properly parse CSV with quoted fields
 function parseCSV(csvContent) {
   const lines = csvContent.trim().split('\n');
   const headers = lines[0].split(',').map(h => h.trim().replace(/"/g, ''));
@@ -36,7 +36,7 @@ function parseCSV(csvContent) {
   return data;
 }
 
-// Function to convert CSV data to flashcard format
+// Function to convert CSV data to clean flashcard format
 function convertToFlashcards(csvData) {
   return csvData.map(row => ({
     id: row.id,
@@ -57,7 +57,7 @@ function convertToFlashcards(csvData) {
   }));
 }
 
-// Function to convert CSV data to quiz format
+// Function to create better quiz questions
 function convertToQuiz(csvData) {
   // Create a pool of incorrect answers from other questions
   const allAnswers = csvData.map(row => row.back);
@@ -89,7 +89,7 @@ function convertToQuiz(csvData) {
 }
 
 // Main conversion function
-function convertBiologyCSV() {
+function fixBiologyData() {
   const csvFiles = [
     'biology_beginner_flashcards.csv',
     'biology_beginner_flashcards_101-200.csv',
@@ -112,6 +112,8 @@ function convertBiologyCSV() {
       const csvContent = fs.readFileSync(filePath, 'utf8');
       const csvData = parseCSV(csvContent);
       
+      console.log(`  Found ${csvData.length} records`);
+      
       const flashcards = convertToFlashcards(csvData);
       const quizQuestions = convertToQuiz(csvData);
       
@@ -122,31 +124,81 @@ function convertBiologyCSV() {
     }
   });
   
-  // Read existing training content
+  // Create a clean training content structure
+  const cleanContent = {
+    core_exam: [
+      // Keep some original questions
+      {
+        "q": "Which metamorphosis type includes larva and pupa stages?",
+        "choices": ["Simple", "Complete", "Ametabolous", "Neotenic"],
+        "answer": 1,
+        "level": "beginner"
+      },
+      {
+        "q": "Frass refers to what?",
+        "choices": ["Molted skins", "Egg cases", "Excrement/chewed material", "A fungal growth"],
+        "answer": 2,
+        "level": "advanced"
+      },
+      {
+        "q": "What document has the force of law for product use?",
+        "choices": ["Company SOP", "EPA PR Notice", "The label", "SDS only"],
+        "answer": 2,
+        "level": "beginner"
+      }
+    ],
+    categories: {
+      biology: allQuizQuestions,
+      household_health: [],
+      wood_destroying: [],
+      fumigation: []
+    },
+    flashcards: [
+      // Keep some original flashcards
+      {
+        "term": "Metamorphosis",
+        "def": "Simple vs. complete development.",
+        "tips": ["Larvae/pupae indicate complete metamorphosis."],
+        "level": "beginner"
+      },
+      {
+        "term": "Frass",
+        "def": "Insect excrement or chewed material used as an ID clue.",
+        "tips": ["Pellets = drywood termites; coffee-ground frass = roaches."],
+        "level": "beginner"
+      }
+    ].concat(allFlashcards),
+    links: {
+      national: [
+        {
+          "title": "EPA Pesticide Registration",
+          "link": "https://www.epa.gov/pesticide-registration",
+          "desc": "Official pesticide registration information"
+        }
+      ],
+      pennsylvania: [
+        {
+          "title": "PA Department of Agriculture",
+          "link": "https://www.agriculture.pa.gov/Plants_Land_Water/PlantIndustry/Pages/default.aspx",
+          "desc": "Pennsylvania pesticide regulations"
+        }
+      ]
+    }
+  };
+  
+  // Write clean content
   const trainingContentPath = path.join(__dirname, 'training-content.json');
-  let existingContent = { core_exam: [], categories: {}, flashcards: [], links: { national: [], pennsylvania: [] } };
+  fs.writeFileSync(trainingContentPath, JSON.stringify(cleanContent, null, 2));
   
-  if (fs.existsSync(trainingContentPath)) {
-    existingContent = JSON.parse(fs.readFileSync(trainingContentPath, 'utf8'));
-  }
-  
-  // Add biology content
-  existingContent.flashcards = existingContent.flashcards.concat(allFlashcards);
-  
-  // Add biology quiz questions to core exam
-  existingContent.core_exam = existingContent.core_exam.concat(allQuizQuestions);
-  
-  // Create biology-specific category
-  existingContent.categories.biology = allQuizQuestions;
-  
-  // Write updated content
-  fs.writeFileSync(trainingContentPath, JSON.stringify(existingContent, null, 2));
-  
-  console.log(`\nConversion complete!`);
+  console.log(`\nFix complete!`);
   console.log(`- Added ${allFlashcards.length} biology flashcards`);
   console.log(`- Added ${allQuizQuestions.length} biology quiz questions`);
-  console.log(`- Updated training-content.json`);
+  console.log(`- Created clean training-content.json`);
+  
+  // Show a sample of the data
+  console.log(`\nSample flashcard:`);
+  console.log(JSON.stringify(allFlashcards[0], null, 2));
 }
 
-// Run the conversion
-convertBiologyCSV();
+// Run the fix
+fixBiologyData();
