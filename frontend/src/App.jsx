@@ -257,8 +257,45 @@ function ModuleQuiz({ title, bank, level, timed = false, durationMinutes = 0 }) 
   );
 }
 
+// -------------------- Error Boundary --------------------
+class ErrorBoundary extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = { hasError: false };
+  }
+
+  static getDerivedStateFromError(error) {
+    return { hasError: true };
+  }
+
+  componentDidCatch(error, errorInfo) {
+    console.error('App error:', error, errorInfo);
+  }
+
+  render() {
+    if (this.state.hasError) {
+      return (
+        <div className="min-h-screen flex items-center justify-center bg-gray-50">
+          <div className="text-center">
+            <h1 className="text-2xl font-bold text-gray-900 mb-4">Something went wrong</h1>
+            <p className="text-gray-600 mb-4">The app encountered an error. Please refresh the page.</p>
+            <button 
+              onClick={() => window.location.reload()} 
+              className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600"
+            >
+              Refresh Page
+            </button>
+          </div>
+        </div>
+      );
+    }
+
+    return this.props.children;
+  }
+}
+
 // -------------------- Main App --------------------
-export default function App() {
+function AppContent() {
   const [content, setContent] = useState(FALLBACK);
   const [level, setLevel] = useState('beginner');
   const [q, setQ] = useState('');
@@ -266,10 +303,16 @@ export default function App() {
 
   // Fetch content function for reload
   const fetchAndSetContent = async () => {
-    setLoading(true);
-    const data = await fetchContent();
-    if (data) setContent(data);
-    setLoading(false);
+    try {
+      setLoading(true);
+      const data = await fetchContent();
+      if (data) setContent(data);
+    } catch (error) {
+      console.error('Error fetching content:', error);
+      setContent(FALLBACK);
+    } finally {
+      setLoading(false);
+    }
   };
 
   useEffect(() => {
@@ -277,19 +320,25 @@ export default function App() {
   }, []);
 
   const filteredFlash = useMemo(() => {
-    const base = pickByLevel(content.flashcards || [], level);
-    if (!q) return base;
-    const needle = q.toLowerCase();
-    return base.filter(t =>
-      ((t.term || t.title || '') + ' ' + (t.def || t.description || ''))
-        .toLowerCase()
-        .includes(needle)
-    );
+    try {
+      const base = pickByLevel(content.flashcards || [], level);
+      if (!q) return base;
+      const needle = q.toLowerCase();
+      return base.filter(t =>
+        ((t.term || t.title || '') + ' ' + (t.def || t.description || ''))
+          .toLowerCase()
+          .includes(needle)
+      );
+    } catch (error) {
+      console.error('Error filtering flashcards:', error);
+      return [];
+    }
   }, [content, level, q]);
 
   // State for displaying only 3 random flashcards at a time
   const [displayedFlashcards, setDisplayedFlashcards] = useState([]);
   const [flashcardKey, setFlashcardKey] = useState(0);
+  const [isRefreshing, setIsRefreshing] = useState(false);
 
   // Function to get 3 random flashcards
   const getRandomFlashcards = useCallback(() => {
@@ -301,8 +350,10 @@ export default function App() {
 
   // Update displayed flashcards when filteredFlash changes
   useEffect(() => {
-    setDisplayedFlashcards(getRandomFlashcards());
-  }, [getRandomFlashcards]);
+    if (filteredFlash.length > 0) {
+      setDisplayedFlashcards(getRandomFlashcards());
+    }
+  }, [filteredFlash]);
 
   // Function to refresh flashcards
   const refreshFlashcards = () => {
@@ -310,9 +361,7 @@ export default function App() {
     setDisplayedFlashcards(getRandomFlashcards());
   };
 
-  // Add a small delay to show the refresh animation
-  const [isRefreshing, setIsRefreshing] = useState(false);
-  
+  // Function to handle refresh with animation
   const handleRefreshFlashcards = () => {
     setIsRefreshing(true);
     setTimeout(() => {
@@ -499,5 +548,14 @@ export default function App() {
         </main>
       </div>
     </MotionConfig>
+  );
+}
+
+// Export the app wrapped in error boundary
+export default function App() {
+  return (
+    <ErrorBoundary>
+      <AppContent />
+    </ErrorBoundary>
   );
 }
