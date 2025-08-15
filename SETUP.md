@@ -141,3 +141,4 @@ If the CSV files aren't being parsed correctly:
 3. Build command: `npm run build`
 4. Publish directory: `dist`
 5. Set environment variable: `VITE_API_URL=https://your-backend-url`
+

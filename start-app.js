@@ -39,3 +39,4 @@ try {
   console.log('❌ Setup failed:', error.message);
   process.exit(1);
 }
+
