@@ -1,0 +1,710 @@
+{
+  "core_exam": [
+    {
+      "q": "Which metamorphosis type includes larva and pupa stages? (Q1)",
+      "choices": [
+        "Simple",
+        "Complete",
+        "Ametabolous",
+        "Neotenic"
+      ],
+      "answer": 1,
+      "level": "beginner"
+    },
+    {
+      "q": "Frass refers to what? (Q2)",
+      "choices": [
+        "Molted skins",
+        "Egg cases",
+        "Excrement/chewed material",
+        "A fungal growth"
+      ],
+      "answer": 2,
+      "level": "advanced"
+    },
+    {
+      "q": "What document has the force of law for product use? (Q3)",
+      "choices": [
+        "Company SOP",
+        "EPA PR Notice",
+        "The label",
+        "SDS only"
+      ],
+      "answer": 2,
+      "level": "beginner"
+    },
+    {
+      "q": "REI stands for? (Q4)",
+      "choices": [
+        "Restricted Entry Interval",
+        "Required Equipment Inventory",
+        "Regional Exposure Index",
+        "Residue Emission Indicator"
+      ],
+      "answer": 0,
+      "level": "advanced"
+    },
+    {
+      "q": "FIFRA primarily governs? (Q5)",
+      "choices": [
+        "Residue tolerances in food",
+        "Registration/sale/use of pesticides",
+        "Worker exposure limits",
+        "Transport of hazardous waste"
+      ],
+      "answer": 1,
+      "level": "beginner"
+    },
+    {
+      "q": "What does RUP mean? (Q6)",
+      "choices": [
+        "Registered Use Pesticide",
+        "Restricted Use Pesticide",
+        "Ready-to-Use Product",
+        "Regional Use Permit"
+      ],
+      "answer": 1,
+      "level": "advanced"
+    },
+    {
+      "q": "Which metamorphosis type includes larva and pupa stages? (Q7)",
+      "choices": [
+        "Simple",
+        "Complete",
+        "Ametabolous",
+        "Neotenic"
+      ],
+      "answer": 1,
+      "level": "beginner"
+    },
+    {
+      "q": "Frass refers to what? (Q8)",
+      "choices": [
+        "Molted skins",
+        "Egg cases",
+        "Excrement/chewed material",
+        "A fungal growth"
+      ],
+      "answer": 2,
+      "level": "advanced"
+    },
+    {
+      "q": "What document has the force of law for product use? (Q9)",
+      "choices": [
+        "Company SOP",
+        "EPA PR Notice",
+        "The label",
+        "SDS only"
+      ],
+      "answer": 2,
+      "level": "beginner"
+    },
+    {
+      "q": "REI stands for? (Q10)",
+      "choices": [
+        "Restricted Entry Interval",
+        "Required Equipment Inventory",
+        "Regional Exposure Index",
+        "Residue Emission Indicator"
+      ],
+      "answer": 0,
+      "level": "advanced"
+    },
+    {
+      "q": "FIFRA primarily governs? (Q11)",
+      "choices": [
+        "Residue tolerances in food",
+        "Registration/sale/use of pesticides",
+        "Worker exposure limits",
+        "Transport of hazardous waste"
+      ],
+      "answer": 1,
+      "level": "beginner"
+    },
+    {
+      "q": "What does RUP mean? (Q12)",
+      "choices": [
+        "Registered Use Pesticide",
+        "Restricted Use Pesticide",
+        "Ready-to-Use Product",
+        "Regional Use Permit"
+      ],
+      "answer": 1,
+      "level": "advanced"
+    },
+    {
+      "q": "Which metamorphosis type includes larva and pupa stages? (Q13)",
+      "choices": [
+        "Simple",
+        "Complete",
+        "Ametabolous",
+        "Neotenic"
+      ],
+      "answer": 1,
+      "level": "beginner"
+    },
+    {
+      "q": "Frass refers to what? (Q14)",
+      "choices": [
+        "Molted skins",
+        "Egg cases",
+        "Excrement/chewed material",
+        "A fungal growth"
+      ],
+      "answer": 2,
+      "level": "advanced"
+    },
+    {
+      "q": "What document has the force of law for product use? (Q15)",
+      "choices": [
+        "Company SOP",
+        "EPA PR Notice",
+        "The label",
+        "SDS only"
+      ],
+      "answer": 2,
+      "level": "beginner"
+    },
+    {
+      "q": "REI stands for? (Q16)",
+      "choices": [
+        "Restricted Entry Interval",
+        "Required Equipment Inventory",
+        "Regional Exposure Index",
+        "Residue Emission Indicator"
+      ],
+      "answer": 0,
+      "level": "advanced"
+    },
+    {
+      "q": "FIFRA primarily governs? (Q17)",
+      "choices": [
+        "Residue tolerances in food",
+        "Registration/sale/use of pesticides",
+        "Worker exposure limits",
+        "Transport of hazardous waste"
+      ],
+      "answer": 1,
+      "level": "beginner"
+    },
+    {
+      "q": "What does RUP mean? (Q18)",
+      "choices": [
+        "Registered Use Pesticide",
+        "Restricted Use Pesticide",
+        "Ready-to-Use Product",
+        "Regional Use Permit"
+      ],
+      "answer": 1,
+      "level": "advanced"
+    },
+    {
+      "q": "Which metamorphosis type includes larva and pupa stages? (Q19)",
+      "choices": [
+        "Simple",
+        "Complete",
+        "Ametabolous",
+        "Neotenic"
+      ],
+      "answer": 1,
+      "level": "beginner"
+    },
+    {
+      "q": "Frass refers to what? (Q20)",
+      "choices": [
+        "Molted skins",
+        "Egg cases",
+        "Excrement/chewed material",
+        "A fungal growth"
+      ],
+      "answer": 2,
+      "level": "advanced"
+    },
+    {
+      "q": "What document has the force of law for product use? (Q21)",
+      "choices": [
+        "Company SOP",
+        "EPA PR Notice",
+        "The label",
+        "SDS only"
+      ],
+      "answer": 2,
+      "level": "beginner"
+    },
+    {
+      "q": "REI stands for? (Q22)",
+      "choices": [
+        "Restricted Entry Interval",
+        "Required Equipment Inventory",
+        "Regional Exposure Index",
+        "Residue Emission Indicator"
+      ],
+      "answer": 0,
+      "level": "advanced"
+    },
+    {
+      "q": "FIFRA primarily governs? (Q23)",
+      "choices": [
+        "Residue tolerances in food",
+        "Registration/sale/use of pesticides",
+        "Worker exposure limits",
+        "Transport of hazardous waste"
+      ],
+      "answer": 1,
+      "level": "beginner"
+    },
+    {
+      "q": "What does RUP mean? (Q24)",
+      "choices": [
+        "Registered Use Pesticide",
+        "Restricted Use Pesticide",
+        "Ready-to-Use Product",
+        "Regional Use Permit"
+      ],
+      "answer": 1,
+      "level": "advanced"
+    },
+    {
+      "q": "Which metamorphosis type includes larva and pupa stages? (Q25)",
+      "choices": [
+        "Simple",
+        "Complete",
+        "Ametabolous",
+        "Neotenic"
+      ],
+      "answer": 1,
+      "level": "beginner"
+    },
+    {
+      "q": "Frass refers to what? (Q26)",
+      "choices": [
+        "Molted skins",
+        "Egg cases",
+        "Excrement/chewed material",
+        "A fungal growth"
+      ],
+      "answer": 2,
+      "level": "advanced"
+    },
+    {
+      "q": "What document has the force of law for product use? (Q27)",
+      "choices": [
+        "Company SOP",
+        "EPA PR Notice",
+        "The label",
+        "SDS only"
+      ],
+      "answer": 2,
+      "level": "beginner"
+    },
+    {
+      "q": "REI stands for? (Q28)",
+      "choices": [
+        "Restricted Entry Interval",
+        "Required Equipment Inventory",
+        "Regional Exposure Index",
+        "Residue Emission Indicator"
+      ],
+      "answer": 0,
+      "level": "advanced"
+    },
+    {
+      "q": "FIFRA primarily governs? (Q29)",
+      "choices": [
+        "Residue tolerances in food",
+        "Registration/sale/use of pesticides",
+        "Worker exposure limits",
+        "Transport of hazardous waste"
+      ],
+      "answer": 1,
+      "level": "beginner"
+    },
+    {
+      "q": "What does RUP mean? (Q30)",
+      "choices": [
+        "Registered Use Pesticide",
+        "Restricted Use Pesticide",
+        "Ready-to-Use Product",
+        "Regional Use Permit"
+      ],
+      "answer": 1,
+      "level": "advanced"
+    },
+    {
+      "q": "Which metamorphosis type includes larva and pupa stages? (Q31)",
+      "choices": [
+        "Simple",
+        "Complete",
+        "Ametabolous",
+        "Neotenic"
+      ],
+      "answer": 1,
+      "level": "beginner"
+    },
+    {
+      "q": "Frass refers to what? (Q32)",
+      "choices": [
+        "Molted skins",
+        "Egg cases",
+        "Excrement/chewed material",
+        "A fungal growth"
+      ],
+      "answer": 2,
+      "level": "advanced"
+    },
+    {
+      "q": "What document has the force of law for product use? (Q33)",
+      "choices": [
+        "Company SOP",
+        "EPA PR Notice",
+        "The label",
+        "SDS only"
+      ],
+      "answer": 2,
+      "level": "beginner"
+    },
+    {
+      "q": "REI stands for? (Q34)",
+      "choices": [
+        "Restricted Entry Interval",
+        "Required Equipment Inventory",
+        "Regional Exposure Index",
+        "Residue Emission Indicator"
+      ],
+      "answer": 0,
+      "level": "advanced"
+    },
+    {
+      "q": "FIFRA primarily governs? (Q35)",
+      "choices": [
+        "Residue tolerances in food",
+        "Registration/sale/use of pesticides",
+        "Worker exposure limits",
+        "Transport of hazardous waste"
+      ],
+      "answer": 1,
+      "level": "beginner"
+    },
+    {
+      "q": "What does RUP mean? (Q36)",
+      "choices": [
+        "Registered Use Pesticide",
+        "Restricted Use Pesticide",
+        "Ready-to-Use Product",
+        "Regional Use Permit"
+      ],
+      "answer": 1,
+      "level": "advanced"
+    },
+    {
+      "q": "Which metamorphosis type includes larva and pupa stages? (Q37)",
+      "choices": [
+        "Simple",
+        "Complete",
+        "Ametabolous",
+        "Neotenic"
+      ],
+      "answer": 1,
+      "level": "beginner"
+    },
+    {
+      "q": "Frass refers to what? (Q38)",
+      "choices": [
+        "Molted skins",
+        "Egg cases",
+        "Excrement/chewed material",
+        "A fungal growth"
+      ],
+      "answer": 2,
+      "level": "advanced"
+    },
+    {
+      "q": "What document has the force of law for product use? (Q39)",
+      "choices": [
+        "Company SOP",
+        "EPA PR Notice",
+        "The label",
+        "SDS only"
+      ],
+      "answer": 2,
+      "level": "beginner"
+    },
+    {
+      "q": "REI stands for? (Q40)",
+      "choices": [
+        "Restricted Entry Interval",
+        "Required Equipment Inventory",
+        "Regional Exposure Index",
+        "Residue Emission Indicator"
+      ],
+      "answer": 0,
+      "level": "advanced"
+    },
+    {
+      "q": "FIFRA primarily governs? (Q41)",
+      "choices": [
+        "Residue tolerances in food",
+        "Registration/sale/use of pesticides",
+        "Worker exposure limits",
+        "Transport of hazardous waste"
+      ],
+      "answer": 1,
+      "level": "beginner"
+    },
+    {
+      "q": "What does RUP mean? (Q42)",
+      "choices": [
+        "Registered Use Pesticide",
+        "Restricted Use Pesticide",
+        "Ready-to-Use Product",
+        "Regional Use Permit"
+      ],
+      "answer": 1,
+      "level": "advanced"
+    },
+    {
+      "q": "Which metamorphosis type includes larva and pupa stages? (Q43)",
+      "choices": [
+        "Simple",
+        "Complete",
+        "Ametabolous",
+        "Neotenic"
+      ],
+      "answer": 1,
+      "level": "beginner"
+    },
+    {
+      "q": "Frass refers to what? (Q44)",
+      "choices": [
+        "Molted skins",
+        "Egg cases",
+        "Excrement/chewed material",
+        "A fungal growth"
+      ],
+      "answer": 2,
+      "level": "advanced"
+    },
+    {
+      "q": "What document has the force of law for product use? (Q45)",
+      "choices": [
+        "Company SOP",
+        "EPA PR Notice",
+        "The label",
+        "SDS only"
+      ],
+      "answer": 2,
+      "level": "beginner"
+    },
+    {
+      "q": "REI stands for? (Q46)",
+      "choices": [
+        "Restricted Entry Interval",
+        "Required Equipment Inventory",
+        "Regional Exposure Index",
+        "Residue Emission Indicator"
+      ],
+      "answer": 0,
+      "level": "advanced"
+    },
+    {
+      "q": "FIFRA primarily governs? (Q47)",
+      "choices": [
+        "Residue tolerances in food",
+        "Registration/sale/use of pesticides",
+        "Worker exposure limits",
+        "Transport of hazardous waste"
+      ],
+      "answer": 1,
+      "level": "beginner"
+    },
+    {
+      "q": "What does RUP mean? (Q48)",
+      "choices": [
+        "Registered Use Pesticide",
+        "Restricted Use Pesticide",
+        "Ready-to-Use Product",
+        "Regional Use Permit"
+      ],
+      "answer": 1,
+      "level": "advanced"
+    },
+    {
+      "q": "Which metamorphosis type includes larva and pupa stages? (Q49)",
+      "choices": [
+        "Simple",
+        "Complete",
+        "Ametabolous",
+        "Neotenic"
+      ],
+      "answer": 1,
+      "level": "beginner"
+    },
+    {
+      "q": "Frass refers to what? (Q50)",
+      "choices": [
+        "Molted skins",
+        "Egg cases",
+        "Excrement/chewed material",
+        "A fungal growth"
+      ],
+      "answer": 2,
+      "level": "advanced"
+    }
+  ],
+  "categories": {
+    "household_health": [
+      {
+        "q": "Which PA category covers household & public health pest control?",
+        "choices": [
+          "Category 7",
+          "Category 11",
+          "Category 3",
+          "Category 21"
+        ],
+        "answer": 1,
+        "level": "beginner"
+      },
+      {
+        "q": "Records for household treatments in PA must be kept for at least:",
+        "choices": [
+          "1 year",
+          "2 years",
+          "3 years",
+          "5 years"
+        ],
+        "answer": 2,
+        "level": "beginner"
+      }
+    ],
+    "wood_destroying": [
+      {
+        "q": "Drywood termite evidence often includes:",
+        "choices": [
+          "Mud tubes",
+          "Pellet-like frass",
+          "Live burrows in soil",
+          "Feathered wings"
+        ],
+        "answer": 1,
+        "level": "advanced"
+      }
+    ],
+    "fumigation": [
+      {
+        "q": "Prior to re-entry after fumigation you must:",
+        "choices": [
+          "Check label once",
+          "Obtain monitoring/clearance by authorized person",
+          "Open windows for 10 minutes",
+          "No clearance needed"
+        ],
+        "answer": 1,
+        "level": "advanced"
+      }
+    ],
+    "turf_ornamental": [
+      {
+        "q": "Which practice reduces runoff into water bodies?",
+        "choices": [
+          "Over-application",
+          "Buffer zones",
+          "Applying during rain",
+          "None"
+        ],
+        "answer": 1,
+        "level": "advanced"
+      }
+    ],
+    "structural": [
+      {
+        "q": "In Pennsylvania, application records must be completed no later than:",
+        "choices": [
+          "End of week",
+          "48 hours",
+          "24 hours",
+          "Immediately when convenient"
+        ],
+        "answer": 2,
+        "level": "beginner"
+      }
+    ]
+  },
+  "flashcards": [
+    {
+      "term": "Metamorphosis",
+      "def": "Simple vs. complete development.",
+      "tips": [
+        "Larvae/pupae indicate complete metamorphosis."
+      ],
+      "level": "beginner"
+    },
+    {
+      "term": "Frass",
+      "def": "Insect excrement or chewed material used as an ID clue.",
+      "tips": [
+        "Pellets = drywood termites; coffee-ground frass = roaches."
+      ],
+      "level": "beginner"
+    },
+    {
+      "term": "Instar",
+      "def": "Stage between molts in arthropods.",
+      "tips": [
+        "Counting instars estimates population age."
+      ],
+      "level": "beginner"
+    },
+    {
+      "term": "Sclerotization",
+      "def": "Hardening of insect cuticle after molting.",
+      "tips": [
+        "Freshly molted insects are pale/soft."
+      ],
+      "level": "advanced"
+    },
+    {
+      "term": "Tarsal formula",
+      "def": "Number of tarsal segments per leg used for ID.",
+      "tips": [
+        "Helps separate ant genera."
+      ],
+      "level": "advanced"
+    }
+  ],
+  "links": {
+    "national": [
+      {
+        "title": "FIFRA Overview (EPA)",
+        "desc": "Federal law for registration, sale, and use of pesticides.",
+        "link": "https://www.epa.gov/regulatory-information-topic/regulatory-and-guidance-information-topic-pesticides"
+      },
+      {
+        "title": "Labeling Requirements (EPA)",
+        "desc": "Structure and legal meaning of the label.",
+        "link": "https://www.epa.gov/pesticide-registration/labeling-requirements"
+      },
+      {
+        "title": "WPS \u2013 Worker Protection Standard (EPA)",
+        "desc": "Training & protections for workers/handlers.",
+        "link": "https://www.epa.gov/pesticide-worker-safety/agricultural-worker-protection-standard-wps"
+      },
+      {
+        "title": "Certification Standards (EPA)",
+        "desc": "RUP applicator certification rules.",
+        "link": "https://www.epa.gov/pesticide-worker-safety/certification-standards-pesticide-applicators"
+      }
+    ],
+    "pennsylvania": [
+      {
+        "title": "PA Dept. of Agriculture \u2013 Pesticides",
+        "desc": "Program info, categories, study materials, regulations.",
+        "link": "https://www.agriculture.pa.gov/Plants_Land_Water/PlantIndustry/PesticidePrograms/Pages/default.aspx"
+      },
+      {
+        "title": "PA Code & Bulletin",
+        "desc": "Key rules affecting commercial/public applicators.",
+        "link": "https://www.pacodeandbulletin.gov"
+      }
+    ]
+  }
+}
