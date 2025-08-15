@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useMemo } from 'react';
+import React, { useEffect, useState, useMemo, useRef } from 'react';
 import { fetchContent } from './api';
 import { MotionConfig, motion } from 'framer-motion';
 import {
