@@ -378,6 +378,17 @@ export default function App() {
             )}
           </SectionCard>
 
+          {/* Core Exam Quiz */}
+          <SectionCard icon={GraduationCap} title="Core Exam Quiz">
+            <ModuleQuiz
+              title="Core Exam"
+              bank={content.core_exam}
+              level={level}
+              timed={true}
+              durationMinutes={10}
+            />
+          </SectionCard>
+
           {/* Footer */}
           <div className="text-center text-xs text-gray-500 py-6">
             <p>
