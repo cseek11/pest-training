@@ -287,6 +287,40 @@ export default function App() {
     );
   }, [content, level, q]);
 
+  // State for displaying only 3 random flashcards at a time
+  const [displayedFlashcards, setDisplayedFlashcards] = useState([]);
+  const [flashcardKey, setFlashcardKey] = useState(0);
+
+  // Function to get 3 random flashcards
+  const getRandomFlashcards = useCallback(() => {
+    if (filteredFlash.length === 0) return [];
+    
+    const shuffled = [...filteredFlash].sort(() => Math.random() - 0.5);
+    return shuffled.slice(0, 3);
+  }, [filteredFlash]);
+
+  // Update displayed flashcards when filteredFlash changes
+  useEffect(() => {
+    setDisplayedFlashcards(getRandomFlashcards());
+  }, [getRandomFlashcards]);
+
+  // Function to refresh flashcards
+  const refreshFlashcards = () => {
+    setFlashcardKey(prev => prev + 1);
+    setDisplayedFlashcards(getRandomFlashcards());
+  };
+
+  // Add a small delay to show the refresh animation
+  const [isRefreshing, setIsRefreshing] = useState(false);
+  
+  const handleRefreshFlashcards = () => {
+    setIsRefreshing(true);
+    setTimeout(() => {
+      refreshFlashcards();
+      setIsRefreshing(false);
+    }, 300);
+  };
+
   const finalAdv50 = useMemo(() => {
     const pool = (content.core_exam || []).filter(
       x => x.level === 'advanced'
@@ -346,23 +380,49 @@ export default function App() {
         <main className="max-w-6xl mx-auto p-4 grid gap-6">
           {/* Flashcards */}
           <SectionCard icon={BookOpen} title="Flashcards">
-            <div className="flex items-center justify-between mb-2">
-              <span></span>
-              <button
-                className="px-3 py-1 text-xs rounded bg-blue-500 text-white hover:bg-blue-600 transition"
-                onClick={fetchAndSetContent}
-                disabled={loading}
-                aria-label="Reload flashcards"
-              >
-                {loading ? 'Loading…' : 'Reload'}
-              </button>
+            <div className="flex items-center justify-between mb-4">
+              <div className="text-sm text-gray-600">
+                Showing 3 random cards • {filteredFlash.length} total available
+              </div>
+              <div className="flex gap-2">
+                <button
+                  className={`px-3 py-1 text-xs rounded text-white transition flex items-center gap-1 ${
+                    isRefreshing 
+                      ? 'bg-gray-400 cursor-not-allowed' 
+                      : 'bg-green-500 hover:bg-green-600'
+                  }`}
+                  onClick={handleRefreshFlashcards}
+                  disabled={loading || filteredFlash.length === 0 || isRefreshing}
+                  aria-label="Refresh flashcards"
+                >
+                  <svg 
+                    className={`w-3 h-3 ${isRefreshing ? 'animate-spin' : ''}`} 
+                    fill="none" 
+                    stroke="currentColor" 
+                    viewBox="0 0 24 24"
+                  >
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
+                  </svg>
+                  {isRefreshing ? 'Loading...' : 'New Cards'}
+                </button>
+                <button
+                  className="px-3 py-1 text-xs rounded bg-blue-500 text-white hover:bg-blue-600 transition"
+                  onClick={fetchAndSetContent}
+                  disabled={loading}
+                  aria-label="Reload content"
+                >
+                  {loading ? 'Loading…' : 'Reload'}
+                </button>
+              </div>
             </div>
             {loading ? (
               <p className="text-sm text-gray-600">Loading content…</p>
+            ) : filteredFlash.length === 0 ? (
+              <p className="text-sm text-gray-600">No flashcards available for this level and search.</p>
             ) : (
-              <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
-                {(filteredFlash || []).map(f => (
-                  <Flashcard key={f.id || f.term || f.title} item={f} />
+              <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4" key={flashcardKey}>
+                {displayedFlashcards.map(f => (
+                  <Flashcard key={`${f.id || f.term || f.title}-${flashcardKey}`} item={f} />
                 ))}
               </div>
             )}
