@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
 import { Clock, AlertTriangle, CheckCircle, X } from 'lucide-react';
 
 export default function Timer({ 
@@ -49,19 +48,10 @@ export default function Timer({
   const isLowTime = timeLeft <= Math.ceil(duration * 0.1);
 
   return (
-    <AnimatePresence>
+    <>
       {isVisible && (
-        <motion.div
-          initial={{ opacity: 0, scale: 0.9 }}
-          animate={{ opacity: 1, scale: 1 }}
-          exit={{ opacity: 0, scale: 0.9 }}
-          className="fixed inset-0 z-50 flex items-center justify-center bg-black/50"
-        >
-          <motion.div
-            initial={{ y: 20 }}
-            animate={{ y: 0 }}
-            className="bg-white rounded-2xl shadow-2xl p-6 max-w-md w-full mx-4"
-          >
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50">
+          <div className="bg-white rounded-2xl shadow-2xl p-6 max-w-md w-full mx-4">
             {/* Header */}
             <div className="flex items-center justify-between mb-4">
               <div className="flex items-center gap-2">
@@ -101,16 +91,12 @@ export default function Timer({
 
             {/* Warning Message */}
             {isWarning && (
-              <motion.div
-                initial={{ opacity: 0, y: 10 }}
-                animate={{ opacity: 1, y: 0 }}
-                className="flex items-center gap-2 p-3 bg-red-50 border border-red-200 rounded-lg mb-4"
-              >
+              <div className="flex items-center gap-2 p-3 bg-red-50 border border-red-200 rounded-lg mb-4">
                 <AlertTriangle className="w-5 h-5 text-red-500" />
                 <span className="text-red-700 text-sm font-medium">
                   Time is running out! Please complete your answers soon.
                 </span>
-              </motion.div>
+              </div>
             )}
 
             {/* Action Buttons */}
@@ -128,9 +114,9 @@ export default function Timer({
                 Submit Now
               </button>
             </div>
-          </motion.div>
-        </motion.div>
+          </div>
+        </div>
       )}
-    </AnimatePresence>
+    </>
   );
 }

@@ -1,5 +1,4 @@
 import React, { useState, useMemo } from 'react';
-import { motion } from 'framer-motion';
 import { Eye, EyeOff, Camera, Info } from 'lucide-react';
 
 export default function PestIdentification({ pests = [], category }) {
@@ -76,11 +75,8 @@ export default function PestIdentification({ pests = [], category }) {
       </div>
 
       {/* Pest Card */}
-      <motion.div
+      <div
         key={currentPest.id || currentIndex}
-        initial={{ opacity: 0, x: 20 }}
-        animate={{ opacity: 1, x: 0 }}
-        transition={{ duration: 0.3 }}
         className="bg-white rounded-2xl border shadow-sm overflow-hidden"
       >
         {/* Image Section */}
@@ -99,9 +95,7 @@ export default function PestIdentification({ pests = [], category }) {
           
           {/* Overlay with answer */}
           {showAnswer && (
-            <motion.div
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
+            <div
               className="absolute inset-0 bg-black/70 flex items-center justify-center"
             >
               <div className="text-center text-white p-6">
@@ -111,7 +105,7 @@ export default function PestIdentification({ pests = [], category }) {
                 )}
                 <p className="text-sm opacity-90">{currentPest.description}</p>
               </div>
-            </motion.div>
+            </div>
           )}
         </div>
 
@@ -165,7 +159,7 @@ export default function PestIdentification({ pests = [], category }) {
             </div>
           )}
         </div>
-      </motion.div>
+      </div>
 
       {/* Thumbnail Navigation */}
       {filteredPests.length > 1 && (

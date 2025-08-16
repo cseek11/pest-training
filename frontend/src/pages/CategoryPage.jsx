@@ -1,6 +1,5 @@
 import React, { useState, useEffect, useMemo } from 'react';
 import { useParams, Link } from 'react-router-dom';
-import { motion } from 'framer-motion';
 import { 
   BookOpen, 
   GraduationCap, 
@@ -217,7 +216,11 @@ export default function CategoryPage() {
                   onClick={() => setLevel(difficulty.id)}
                   className={`px-4 py-2 rounded-lg border transition-colors ${
                     level === difficulty.id
-                      ? `bg-${difficulty.color}-500 text-white border-${difficulty.color}-500`
+                      ? difficulty.id === 'beginner' 
+                        ? 'bg-green-500 text-white border-green-500'
+                        : difficulty.id === 'intermediate'
+                        ? 'bg-yellow-500 text-white border-yellow-500'
+                        : 'bg-red-500 text-white border-red-500'
                       : 'bg-white text-gray-700 border-gray-300 hover:bg-gray-50'
                   }`}
                 >
@@ -244,9 +247,7 @@ export default function CategoryPage() {
 
         <div className="grid gap-6">
           {/* Flashcards Section */}
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
+          <div
             className="bg-white rounded-2xl border shadow-sm"
           >
             <div className="p-6 border-b">
@@ -273,13 +274,10 @@ export default function CategoryPage() {
                 </div>
               )}
             </div>
-          </motion.div>
+          </div>
 
           {/* Quiz and Test Section */}
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.1 }}
+          <div
             className="bg-white rounded-2xl border shadow-sm"
           >
             <div className="p-6 border-b">
@@ -339,13 +337,10 @@ export default function CategoryPage() {
                 </div>
               </div>
             </div>
-          </motion.div>
+          </div>
 
           {/* Pest Identification Section */}
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.2 }}
+          <div
             className="bg-white rounded-2xl border shadow-sm"
           >
             <div className="p-6 border-b">
@@ -360,7 +355,7 @@ export default function CategoryPage() {
                 category={category.name}
               />
             </div>
-          </motion.div>
+          </div>
         </div>
       </div>
 

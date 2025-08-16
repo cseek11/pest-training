@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
-import { motion } from 'framer-motion';
 import { Search, BookOpen, GraduationCap, Camera, Bug } from 'lucide-react';
 import { CERTIFICATION_CATEGORIES } from '../data/categories';
 
@@ -49,39 +48,25 @@ export default function HomePage() {
 
         {/* Stats */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            className="bg-white rounded-xl border p-6 text-center"
-          >
+          <div className="bg-white rounded-xl border p-6 text-center">
             <BookOpen className="w-8 h-8 text-blue-500 mx-auto mb-3" />
             <h3 className="text-xl font-semibold text-gray-800 mb-1">
               {CERTIFICATION_CATEGORIES.length}
             </h3>
             <p className="text-gray-600">Certification Categories</p>
-          </motion.div>
+          </div>
 
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.1 }}
-            className="bg-white rounded-xl border p-6 text-center"
-          >
+          <div className="bg-white rounded-xl border p-6 text-center">
             <GraduationCap className="w-8 h-8 text-green-500 mx-auto mb-3" />
             <h3 className="text-xl font-semibold text-gray-800 mb-1">3</h3>
             <p className="text-gray-600">Difficulty Levels</p>
-          </motion.div>
+          </div>
 
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.2 }}
-            className="bg-white rounded-xl border p-6 text-center"
-          >
+          <div className="bg-white rounded-xl border p-6 text-center">
             <Camera className="w-8 h-8 text-purple-500 mx-auto mb-3" />
             <h3 className="text-xl font-semibold text-gray-800 mb-1">100+</h3>
             <p className="text-gray-600">Pest Images</p>
-          </motion.div>
+          </div>
         </div>
 
         {/* Categories Grid */}
@@ -103,14 +88,7 @@ export default function HomePage() {
           ) : (
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
               {filteredCategories.map((category, index) => (
-                <motion.div
-                  key={category.id}
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ delay: index * 0.05 }}
-                  whileHover={{ y: -4 }}
-                  className="group"
-                >
+                <div key={category.id} className="group">
                   <Link
                     to={`/category/${category.slug}`}
                     className="block bg-white rounded-xl border shadow-sm hover:shadow-md transition-all duration-200 overflow-hidden"
@@ -153,19 +131,14 @@ export default function HomePage() {
                       </div>
                     </div>
                   </Link>
-                </motion.div>
+                </div>
               ))}
             </div>
           )}
         </div>
 
         {/* Features Section */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.3 }}
-          className="bg-white rounded-xl border p-8"
-        >
+        <div className="bg-white rounded-xl border p-8">
           <h2 className="text-2xl font-bold text-gray-800 mb-6 text-center">
             Training Features
           </h2>
@@ -211,7 +184,7 @@ export default function HomePage() {
               </p>
             </div>
           </div>
-        </motion.div>
+        </div>
       </div>
     </div>
   );
