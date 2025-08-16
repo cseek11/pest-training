@@ -1,14 +1,15 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, Link } from 'react-router-dom';
-import { ArrowLeft } from 'lucide-react';
-import { getCategoryBySlug } from '../data/categories';
+// import { ArrowLeft } from 'lucide-react';
+// import { getCategoryBySlug } from '../data/categories';
 
 export default function CategoryPage() {
   const { categorySlug } = useParams();
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
-  const category = getCategoryBySlug(categorySlug);
+  // const category = getCategoryBySlug(categorySlug);
+  const category = { name: 'Test Category', description: 'Test description' };
 
   useEffect(() => {
     // Simulate loading
@@ -80,8 +81,8 @@ export default function CategoryPage() {
               to="/" 
               className="flex items-center gap-2 text-gray-600 hover:text-gray-800 transition-colors"
             >
-              <ArrowLeft className="w-5 h-5" />
-              Back to Categories
+              {/* <ArrowLeft className="w-5 h-5" /> */}
+              ← Back to Categories
             </Link>
             <div className="flex-1">
               <h1 className="text-2xl font-bold text-gray-800">
@@ -104,9 +105,8 @@ export default function CategoryPage() {
           <div className="mt-4 p-4 bg-gray-50 rounded-lg">
             <h3 className="font-semibold mb-2">Category Details:</h3>
             <ul className="text-sm text-gray-600 space-y-1">
-              <li><strong>ID:</strong> {category.id}</li>
+              <li><strong>Slug:</strong> {categorySlug}</li>
               <li><strong>Name:</strong> {category.name}</li>
-              <li><strong>Slug:</strong> {category.slug}</li>
               <li><strong>Description:</strong> {category.description}</li>
             </ul>
           </div>
