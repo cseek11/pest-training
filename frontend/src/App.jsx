@@ -65,10 +65,12 @@ function Flashcard({ item }) {
   const [flip, setFlip] = useState(false);
 
   return (
-      </div>
-    </MotionConfig>
-  );
-}
+    <div
+      className="cursor-pointer"
+      onClick={() => setFlip(f => !f)}
+      aria-pressed={flip}
+    >
+      <motion.div
         className="rounded-2xl border p-4 bg-white shadow-sm min-h-[120px] flex items-center justify-center text-center relative"
         initial={false}
         animate={{ rotateY: flip ? 180 : 0 }}
