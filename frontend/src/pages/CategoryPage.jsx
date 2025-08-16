@@ -71,26 +71,41 @@ export default function CategoryPage() {
     }
   }, [category]);
 
-  // Filter flashcards by level and search
+  // Filter flashcards by level and search term
   const filteredFlashcards = useMemo(() => {
-    try {
-      let filtered = (flashcards || []).filter(f => f.level === level);
-      
-      if (searchTerm) {
-        const needle = searchTerm.toLowerCase();
-        filtered = filtered.filter(f =>
-          ((f.term || f.title || '') + ' ' + (f.def || f.description || ''))
-            .toLowerCase()
-            .includes(needle)
-        );
-      }
-      
-      return filtered;
-    } catch (error) {
-      console.error('Error filtering flashcards:', error);
-      return [];
-    }
+    if (!flashcards || !Array.isArray(flashcards)) return [];
+    
+    return flashcards.filter(card => {
+      const matchesLevel = !level || card.level === level;
+      const matchesSearch = !searchTerm || 
+        (card.term && card.term.toLowerCase().includes(searchTerm.toLowerCase())) ||
+        (card.definition && card.definition.toLowerCase().includes(searchTerm.toLowerCase()));
+      return matchesLevel && matchesSearch;
+    });
   }, [flashcards, level, searchTerm]);
+
+  // Filter quiz questions by level and search term
+  const filteredQuizQuestions = useMemo(() => {
+    if (!quizBank || !Array.isArray(quizBank)) return [];
+    
+    return quizBank.filter(question => {
+      const matchesLevel = !level || question.level === level;
+      const matchesSearch = !searchTerm || 
+        (question.question && question.question.toLowerCase().includes(searchTerm.toLowerCase()));
+      return matchesLevel && matchesSearch;
+    });
+  }, [quizBank, level, searchTerm]);
+
+  // Filter test questions by search term (all levels)
+  const filteredTestQuestions = useMemo(() => {
+    if (!quizBank || !Array.isArray(quizBank)) return [];
+    
+    return quizBank.filter(question => {
+      const matchesSearch = !searchTerm || 
+        (question.question && question.question.toLowerCase().includes(searchTerm.toLowerCase()));
+      return matchesSearch;
+    });
+  }, [quizBank, searchTerm]);
 
   // Get 3 random flashcards for display
   const displayedFlashcards = useMemo(() => {
@@ -143,13 +158,40 @@ export default function CategoryPage() {
     setShowTimer(false);
   };
 
+  if (error) {
+    return (
+      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
+        <div className="text-center max-w-md mx-auto p-6">
+          <h1 className="text-2xl font-bold text-gray-800 mb-4">
+            Error Loading Category
+          </h1>
+          <p className="text-gray-600 mb-4">{error}</p>
+          <Link
+            to="/"
+            className="px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition-colors"
+          >
+            Back to Home
+          </Link>
+        </div>
+      </div>
+    );
+  }
+
   if (!category) {
     return (
-      <div className="min-h-screen flex items-center justify-center">
-        <div className="text-center">
-          <h1 className="text-2xl font-bold text-gray-800 mb-4">Category Not Found</h1>
-          <Link to="/" className="text-blue-500 hover:underline">
-            Return to Home
+      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
+        <div className="text-center max-w-md mx-auto p-6">
+          <h1 className="text-2xl font-bold text-gray-800 mb-4">
+            Category Not Found
+          </h1>
+          <p className="text-gray-600 mb-4">
+            The requested category could not be found.
+          </p>
+          <Link
+            to="/"
+            className="px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition-colors"
+          >
+            Back to Home
           </Link>
         </div>
       </div>
@@ -162,20 +204,6 @@ export default function CategoryPage() {
         <div className="text-center">
           <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-500 mx-auto mb-4"></div>
           <p className="text-gray-600">Loading {category.name}...</p>
-        </div>
-      </div>
-    );
-  }
-
-  if (error) {
-    return (
-      <div className="min-h-screen flex items-center justify-center">
-        <div className="text-center">
-          <h1 className="text-2xl font-bold text-gray-800 mb-4">Error Loading Data</h1>
-          <p className="text-gray-600 mb-4">{error}</p>
-          <Link to="/" className="text-blue-500 hover:underline">
-            Return to Home
-          </Link>
         </div>
       </div>
     );
@@ -250,27 +278,38 @@ export default function CategoryPage() {
           <div
             className="bg-white rounded-2xl border shadow-sm"
           >
-            <div className="p-6 border-b">
-              <div className="flex items-center justify-between">
-                <div className="flex items-center gap-2">
+            <div className="p-6">
+              <div className="flex items-center justify-between mb-6">
+                <div className="flex items-center gap-3">
                   <BookOpen className="w-6 h-6 text-blue-500" />
-                  <h3 className="text-xl font-semibold">Flashcards</h3>
+                  <h2 className="text-xl font-semibold text-gray-800">
+                    Flashcards
+                  </h2>
                 </div>
-                <div className="text-sm text-gray-600">
-                  {filteredFlashcards.length} available • Showing 3 random
+                <div className="text-sm text-gray-500">
+                  {filteredFlashcards.length} cards
                 </div>
               </div>
-            </div>
-            <div className="p-6">
-              {displayedFlashcards.length === 0 ? (
-                <p className="text-gray-500 text-center py-8">
-                  No flashcards available for {level} level.
-                </p>
-              ) : (
-                <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
-                  {displayedFlashcards.map((flashcard, index) => (
-                    <Flashcard key={flashcard.id || index} item={flashcard} />
+
+              {loading ? (
+                <div className="text-center py-8">
+                  <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-500 mx-auto"></div>
+                  <p className="text-gray-600 mt-2">Loading flashcards...</p>
+                </div>
+              ) : displayedFlashcards.length > 0 ? (
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                  {displayedFlashcards.map((card, index) => (
+                    <div key={card.id || index}>
+                      <Flashcard card={card} />
+                    </div>
                   ))}
+                </div>
+              ) : (
+                <div className="text-center py-8">
+                  <BookOpen className="w-12 h-12 text-gray-400 mx-auto mb-3" />
+                  <p className="text-gray-600">
+                    No flashcards found for this category and level.
+                  </p>
                 </div>
               )}
             </div>
@@ -280,60 +319,77 @@ export default function CategoryPage() {
           <div
             className="bg-white rounded-2xl border shadow-sm"
           >
-            <div className="p-6 border-b">
-              <div className="flex items-center gap-2">
-                <GraduationCap className="w-6 h-6 text-green-500" />
-                <h3 className="text-xl font-semibold">Practice & Assessment</h3>
-              </div>
-            </div>
             <div className="p-6">
-              <div className="grid md:grid-cols-2 gap-6">
+              <div className="flex items-center justify-between mb-6">
+                <div className="flex items-center gap-3">
+                  <GraduationCap className="w-6 h-6 text-green-500" />
+                  <h2 className="text-xl font-semibold text-gray-800">
+                    Assessments
+                  </h2>
+                </div>
+              </div>
+
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 {/* Quiz */}
-                <div className="border rounded-xl p-6">
-                  <div className="flex items-center gap-2 mb-4">
-                    <ListChecks className="w-5 h-5 text-blue-500" />
-                    <h4 className="font-semibold">Practice Quiz</h4>
+                <div className="border rounded-xl p-4">
+                  <div className="flex items-center justify-between mb-4">
+                    <h3 className="font-semibold text-gray-800">Practice Quiz</h3>
+                    <span className="text-sm text-gray-500">
+                      {filteredQuizQuestions.length} questions
+                    </span>
                   </div>
-                  <p className="text-gray-600 mb-4">
-                    Test your knowledge with a timed quiz. 15 minutes, multiple choice questions.
-                  </p>
-                  <div className="flex items-center gap-2 mb-4 text-sm text-gray-500">
-                    <Clock className="w-4 h-4" />
-                    <span>15 minutes</span>
-                    <span>•</span>
-                    <span>{levelQuizzes.length} questions available</span>
-                  </div>
-                  <button
-                    onClick={startQuiz}
-                    disabled={levelQuizzes.length === 0}
-                    className="w-full px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
-                  >
-                    Start Quiz
-                  </button>
+                  
+                  {filteredQuizQuestions.length > 0 ? (
+                    <div className="space-y-3">
+                      <button
+                        onClick={() => {
+                          setShowQuiz(true);
+                          setShowTimer(true);
+                          setTimerDuration(300); // 5 minutes
+                          setTimerTitle("Quiz Timer");
+                        }}
+                        className="w-full px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition-colors"
+                      >
+                        Start Quiz (5 min)
+                      </button>
+                      <p className="text-xs text-gray-600">
+                        Timed quiz with {filteredQuizQuestions.length} questions
+                      </p>
+                    </div>
+                  ) : (
+                    <p className="text-sm text-gray-600">No quiz questions available.</p>
+                  )}
                 </div>
 
                 {/* Final Test */}
-                <div className="border rounded-xl p-6">
-                  <div className="flex items-center gap-2 mb-4">
-                    <Trophy className="w-5 h-5 text-yellow-500" />
-                    <h4 className="font-semibold">Final Test</h4>
+                <div className="border rounded-xl p-4">
+                  <div className="flex items-center justify-between mb-4">
+                    <h3 className="font-semibold text-gray-800">Final Test</h3>
+                    <span className="text-sm text-gray-500">
+                      {filteredTestQuestions.length} questions
+                    </span>
                   </div>
-                  <p className="text-gray-600 mb-4">
-                    Comprehensive assessment. 30 minutes, pass/fail evaluation.
-                  </p>
-                  <div className="flex items-center gap-2 mb-4 text-sm text-gray-500">
-                    <Clock className="w-4 h-4" />
-                    <span>30 minutes</span>
-                    <span>•</span>
-                    <span>Comprehensive</span>
-                  </div>
-                  <button
-                    onClick={startTest}
-                    disabled={levelQuizzes.length === 0}
-                    className="w-full px-4 py-2 bg-yellow-500 text-white rounded-lg hover:bg-yellow-600 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
-                  >
-                    Start Test
-                  </button>
+                  
+                  {filteredTestQuestions.length > 0 ? (
+                    <div className="space-y-3">
+                      <button
+                        onClick={() => {
+                          setShowTest(true);
+                          setShowTimer(true);
+                          setTimerDuration(1800); // 30 minutes
+                          setTimerTitle("Final Test Timer");
+                        }}
+                        className="w-full px-4 py-2 bg-green-500 text-white rounded-lg hover:bg-green-600 transition-colors"
+                      >
+                        Start Final Test (30 min)
+                      </button>
+                      <p className="text-xs text-gray-600">
+                        Comprehensive test with {filteredTestQuestions.length} questions
+                      </p>
+                    </div>
+                  ) : (
+                    <p className="text-sm text-gray-600">No test questions available.</p>
+                  )}
                 </div>
               </div>
             </div>
@@ -343,16 +399,17 @@ export default function CategoryPage() {
           <div
             className="bg-white rounded-2xl border shadow-sm"
           >
-            <div className="p-6 border-b">
-              <div className="flex items-center gap-2">
-                <Camera className="w-6 h-6 text-purple-500" />
-                <h3 className="text-xl font-semibold">Pest Identification</h3>
-              </div>
-            </div>
             <div className="p-6">
+              <div className="flex items-center gap-3 mb-6">
+                <Camera className="w-6 h-6 text-purple-500" />
+                <h2 className="text-xl font-semibold text-gray-800">
+                  Pest Identification Training
+                </h2>
+              </div>
+              
               <PestIdentification 
-                pests={[]} // TODO: Add pest data from API
                 category={category.name}
+                level={level}
               />
             </div>
           </div>
@@ -400,3 +457,4 @@ export default function CategoryPage() {
     </div>
   );
 }
+
