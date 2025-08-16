@@ -1,8 +1,29 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { CERTIFICATION_CATEGORIES } from '../data/categories';
 
 export default function HomePage() {
+  // Simple hardcoded categories for testing
+  const testCategories = [
+    {
+      id: '01',
+      name: 'Agronomic Crops',
+      description: 'Pest control for field crops, grains, and agricultural commodities',
+      slug: 'agronomic-crops'
+    },
+    {
+      id: '02',
+      name: 'Fruit and Nuts',
+      description: 'Pest management for fruit trees, nut trees, and orchards',
+      slug: 'fruit-and-nuts'
+    },
+    {
+      id: '03',
+      name: 'Vegetable Crops',
+      description: 'Pest control for vegetable gardens and commercial vegetable production',
+      slug: 'vegetable-crops'
+    }
+  ];
+
   return (
     <div className="min-h-screen bg-gray-50">
       {/* Header */}
@@ -23,11 +44,11 @@ export default function HomePage() {
         {/* Categories Grid */}
         <div className="mb-8">
           <h2 className="text-2xl font-bold text-gray-800 mb-6 text-center">
-            Certification Categories
+            Certification Categories (Test Version)
           </h2>
           
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {CERTIFICATION_CATEGORIES.map((category) => (
+            {testCategories.map((category) => (
               <div key={category.id} className="group">
                 <Link
                   to={`/category/${category.slug}`}
@@ -62,6 +83,27 @@ export default function HomePage() {
                 </Link>
               </div>
             ))}
+          </div>
+        </div>
+
+        {/* Test Navigation */}
+        <div className="bg-white rounded-xl border p-6 text-center">
+          <h3 className="text-lg font-semibold text-gray-800 mb-4">
+            Test Navigation
+          </h3>
+          <div className="flex gap-4 justify-center">
+            <Link
+              to="/admin"
+              className="px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition-colors"
+            >
+              Go to Admin
+            </Link>
+            <Link
+              to="/category/agronomic-crops"
+              className="px-4 py-2 bg-green-500 text-white rounded-lg hover:bg-green-600 transition-colors"
+            >
+              Test Category Page
+            </Link>
           </div>
         </div>
       </div>
