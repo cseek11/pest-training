@@ -1,9 +1,12 @@
-import { createClient } from '@supabase/supabase-js';
+import { supabase } from './lib/supabaseClient';
 
 const supabaseUrl = import.meta.env.VITE_SUPABASE_URL;
 const supabaseKey = import.meta.env.VITE_SUPABASE_KEY;
 
-export const supabase = createClient(supabaseUrl, supabaseKey);
+// Debug logging
+console.log('Environment variables check:');
+console.log('VITE_SUPABASE_URL:', supabaseUrl ? 'Set' : 'Not set');
+console.log('VITE_SUPABASE_KEY:', supabaseKey ? 'Set' : 'Not set');
 
 // Fetch all flashcards and map definition to def for frontend compatibility
 export async function fetchFlashcards() {
@@ -13,8 +16,15 @@ export async function fetchFlashcards() {
       throw new Error('Supabase not configured - missing VITE_SUPABASE_URL or VITE_SUPABASE_KEY environment variables');
     }
 
+    if (!supabase) {
+      throw new Error('Supabase client not initialized');
+    }
+
+    console.log('Attempting to fetch flashcards from Supabase...');
     const { data, error } = await supabase.from('flashcards').select('*');
     if (error) throw error;
+    
+    console.log('Flashcards fetched successfully:', data?.length || 0, 'items');
     return (data || []).map(f => ({
       ...f,
       def: f.definition, // map definition to def
@@ -41,8 +51,15 @@ export async function fetchQuizBank() {
       throw new Error('Supabase not configured - missing VITE_SUPABASE_URL or VITE_SUPABASE_KEY environment variables');
     }
 
+    if (!supabase) {
+      throw new Error('Supabase client not initialized');
+    }
+
+    console.log('Attempting to fetch quiz bank from Supabase...');
     const { data, error } = await supabase.from('quizzes').select('*');
     if (error) throw error;
+    
+    console.log('Quiz bank fetched successfully:', data?.length || 0, 'items');
     return (data || []).map(q => {
       const choices = [q.option_a, q.option_b, q.option_c, q.option_d];
       const answerIdx = choices.findIndex(opt => opt === q.correct_option);
