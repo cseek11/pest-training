@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { CATEGORIES } from '../categories';
+import { CATEGORIES, PA_CERT_CATEGORIES } from '../categories';
 
 export default function HomePage() {
   return (
@@ -14,6 +14,19 @@ export default function HomePage() {
             className="block px-6 py-4 rounded bg-blue-500 text-white font-semibold hover:bg-blue-600"
           >
             {cat.name} Flashcards & Quizzes
+          </Link>
+        ))}
+      </div>
+
+      <h2 className="text-xl font-bold mt-10 mb-4">PA Certification</h2>
+      <div className="grid gap-4 mb-8">
+        {PA_CERT_CATEGORIES.map(cat => (
+          <Link
+            key={cat.slug}
+            to={`/category/${cat.slug}`}
+            className="block px-6 py-4 rounded bg-purple-500 text-white font-semibold hover:bg-purple-600"
+          >
+            {cat.name}
           </Link>
         ))}
       </div>
