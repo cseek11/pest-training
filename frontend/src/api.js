@@ -23,11 +23,25 @@ export async function fetchFlashcards() {
     console.log('Attempting to fetch flashcards from Supabase...');
     const { data, error } = await supabase.from('flashcards').select('*');
     if (error) throw error;
+
+    async function fetchTerms(page = 0, pageSize = 1000) {
+      const from = page * pageSize;
+      const to = from + pageSize - 1;
+    
+      const { data, error } = await supabase
+        .from('your_table')
+        .select('*')
+        .range(from, to);
+    
+      if (error) {
+        console.error('Supabase error:', error);
+        return [];
+      }
     
     console.log('Flashcards fetched successfully:', data?.length || 0, 'items');
     return (data || []).map(f => ({
       ...f,
-      definition: f.definition, // map definition to def
+      def: f.definition, // map definition to def
       image_url: f.image_url,
       level: f.level,
       term: f.term,
