@@ -27,7 +27,7 @@ export async function fetchFlashcards() {
     console.log('Flashcards fetched successfully:', data?.length || 0, 'items');
     return (data || []).map(f => ({
       ...f,
-      def: f.definition, // map definition to def
+      definition: f.definition, // map definition to def
       image_url: f.image_url,
       level: f.level,
       term: f.term,
