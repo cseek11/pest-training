@@ -8,26 +8,24 @@ console.log('Environment variables check:');
 console.log('VITE_SUPABASE_URL:', supabaseUrl ? 'Set' : 'Not set');
 console.log('VITE_SUPABASE_KEY:', supabaseKey ? 'Set' : 'Not set');
 
-// Fetch all flashcards and map definition to def for frontend compatibility
-export async function fetchFlashcards() {
+// Fetch flashcards with optional filters
+export async function fetchFlashcards({ category, level, imageOnly } = {}) {
   try {
-    // Check if Supabase is configured
     if (!supabaseUrl || !supabaseKey) {
       throw new Error('Supabase not configured - missing VITE_SUPABASE_URL or VITE_SUPABASE_KEY environment variables');
     }
-
     if (!supabase) {
       throw new Error('Supabase client not initialized');
     }
-
-    console.log('Attempting to fetch flashcards from Supabase...');
-    const { data, error } = await supabase.from('flashcards').select('*');
+    let query = supabase.from('flashcards').select('*');
+    if (category) query = query.eq('category', category);
+    if (level) query = query.eq('level', level);
+    if (imageOnly) query = query.not('image_url', 'is', null);
+    const { data, error } = await query;
     if (error) throw error;
-
-    console.log('Flashcards fetched successfully:', data?.length || 0, 'items');
     return (data || []).map(f => ({
       ...f,
-      def: f.definition, // map definition to def
+      def: f.definition,
       image_url: f.image_url,
       level: f.level,
       term: f.term,
@@ -44,22 +42,19 @@ export async function fetchFlashcards() {
 }
 
 // Fetch quiz questions from Supabase (table: quizzes) and transform to frontend format
-export async function fetchQuizBank() {
+export async function fetchQuizBank({ category, level } = {}) {
   try {
-    // Check if Supabase is configured
     if (!supabaseUrl || !supabaseKey) {
       throw new Error('Supabase not configured - missing VITE_SUPABASE_URL or VITE_SUPABASE_KEY environment variables');
     }
-
     if (!supabase) {
       throw new Error('Supabase client not initialized');
     }
-
-    console.log('Attempting to fetch quiz bank from Supabase...');
-    const { data, error } = await supabase.from('quizzes').select('*');
+    let query = supabase.from('quizzes').select('*');
+    if (category) query = query.eq('category', category);
+    if (level) query = query.eq('level', level);
+    const { data, error } = await query;
     if (error) throw error;
-    
-    console.log('Quiz bank fetched successfully:', data?.length || 0, 'items');
     return (data || []).map(q => {
       const choices = [q.option_a, q.option_b, q.option_c, q.option_d];
       const answerIdx = choices.findIndex(opt => opt === q.correct_option);

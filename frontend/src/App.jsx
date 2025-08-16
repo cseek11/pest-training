@@ -12,6 +12,10 @@ import {
   XCircle,
   AlertCircle
 } from 'lucide-react';
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import HomePage from './pages/HomePage';
+import CategoryPage from './pages/CategoryPage';
+import PestIdentificationPage from './pages/PestIdentificationPage';
 
 // -------------------- Constants & Utils --------------------
 const FALLBACK_FLASHCARDS = [];
@@ -80,109 +84,16 @@ function Flashcard({ item }) {
       >
         {/* Front */}
         <div style={{ backfaceVisibility: 'hidden' }} className="text-base">
-          <span className="font-semibold">{item.term || item.title}</span>
-          {item.level === 'advanced' && (
-            <span className="ml-2 text-xs text-purple-600">Advanced</span>
-          )}
-        </div>
-
-        {/* Back */}
-        <div
-          style={{ backfaceVisibility: 'hidden', transform: 'rotateY(180deg)' }}
-          className="absolute px-2 text-sm text-gray-700"
-        >
-          <p className="font-medium">{item.def || item.description}</p>
-          {item.tips?.length ? (
-            <ul className="mt-2 list-disc list-inside text-gray-600">
-              {item.tips.map((t, i) => (
-                <li key={i}>{t}</li>
-              ))}
-            </ul>
-          ) : null}
-        </div>
-      </motion.div>
-    </div>
-  );
-}
-
-function LinkList({ items }) {
   return (
-    <ul className="space-y-2">
-      {items.map(l => (
-        <li key={l.id || l.link}>
-          <a
-            className="inline-flex items-center gap-2 underline"
-            href={l.link}
-            target="_blank"
-            rel="noreferrer"
-          >
-            <LinkIcon className="w-4 h-4" />
-            <span className="font-medium">{l.title}</span>
-          </a>
-          {l.desc && (
-            <p className="text-sm text-gray-600 ml-6">{l.desc}</p>
-          )}
-        </li>
-      ))}
-    </ul>
+    <Router>
+      <Routes>
+        <Route path="/" element={<HomePage />} />
+        <Route path="/category/:categorySlug" element={<CategoryPage />} />
+        <Route path="/identify" element={<PestIdentificationPage />} />
+        {/* Add more routes as needed */}
+      </Routes>
+    </Router>
   );
-}
-
-// -------------------- Quiz Component --------------------
-function ModuleQuiz({ title, bank, level, timed = false, durationMinutes = 0 }) {
-  const questions = useMemo(() => pickByLevel(bank || [], level), [bank, level]);
-
-  const [i, setI] = useState(0);
-  const [sel, setSel] = useState(null);
-  const [score, setScore] = useState(0);
-  const [done, setDone] = useState(false);
-  const [timeLeft, setTimeLeft] = useState(durationMinutes * 60);
-  const timerRef = useRef(null);
-
-  // Timer handling
-  useEffect(() => {
-    if (timed && durationMinutes > 0 && !done) {
-      setTimeLeft(durationMinutes * 60);
-      timerRef.current = setInterval(() => {
-        setTimeLeft(t => {
-          if (t <= 1) {
-            clearInterval(timerRef.current);
-            setDone(true);
-            return 0;
-          }
-          return t - 1;
-        });
-      }, 1000);
-    }
-    return () => clearInterval(timerRef.current);
-  }, [timed, durationMinutes, done]);
-
-  function choose(idx) {
-    if (sel !== null) return;
-    setSel(idx);
-    if (idx === questions[i].answer) setScore(s => s + 1);
-
-    setTimeout(() => {
-      if (i + 1 < questions.length) {
-        setI(i + 1);
-        setSel(null);
-      } else {
-        setDone(true);
-      }
-    }, 700);
-  }
-
-  function reset() {
-    setI(0);
-    setSel(null);
-    setScore(0);
-    setDone(false);
-    if (timed && durationMinutes > 0) {
-      setTimeLeft(durationMinutes * 60);
-    }
-  }
-
-  if (!questions.length) {
     return <p className="text-sm text-gray-600">No questions at this level.</p>;
   }
 
