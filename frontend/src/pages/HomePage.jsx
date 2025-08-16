@@ -1,3 +1,7 @@
+import React from 'react';
+import { Link } from 'react-router-dom';
+import { CATEGORIES, PA_CERT_CATEGORIES } from '../categories';
+import veropestLogo from '../assets/branding/veropest_logo.png';
 export default function HomePage() {
   // Branding colors (from logo): green (#3CA35B), blue (#1A4D8F), neutral (#F5F7FA)
   return (
