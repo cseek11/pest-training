@@ -1,162 +1,23 @@
-import React, { useState, useEffect, useMemo } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useParams, Link } from 'react-router-dom';
-import { 
-  BookOpen, 
-  GraduationCap, 
-  ListChecks, 
-  Camera, 
-  ArrowLeft,
-  Clock,
-  Trophy,
-  Search,
-  Bug
-} from 'lucide-react';
-import { getCategoryBySlug, DIFFICULTY_LEVELS } from '../data/categories';
-import { fetchFlashcards, fetchQuizBank } from '../api';
-import Flashcard from '../components/Flashcard';
-import Quiz from '../components/Quiz';
-import FinalExam from '../components/FinalExam';
-import Timer from '../components/Timer';
-import PestIdentification from '../components/PestIdentification';
+import { ArrowLeft } from 'lucide-react';
+import { getCategoryBySlug } from '../data/categories';
 
 export default function CategoryPage() {
   const { categorySlug } = useParams();
-  const [flashcards, setFlashcards] = useState([]);
-  const [quizBank, setQuizBank] = useState([]);
-  const [level, setLevel] = useState('beginner');
-  const [searchTerm, setSearchTerm] = useState('');
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  const [showQuiz, setShowQuiz] = useState(false);
-  const [showTest, setShowTest] = useState(false);
-  const [showTimer, setShowTimer] = useState(false);
-  const [timerDuration, setTimerDuration] = useState(0);
-  const [timerTitle, setTimerTitle] = useState('');
 
   const category = getCategoryBySlug(categorySlug);
 
   useEffect(() => {
-    const loadData = async () => {
-      try {
-        setLoading(true);
-        setError(null);
-        
-        const [flashcardData, quizData] = await Promise.all([
-          fetchFlashcards(),
-          fetchQuizBank()
-        ]);
-        
-        // Filter by category
-        const categoryFlashcards = (flashcardData || []).filter(f => 
-          f.category === category?.name || f.category === category?.id
-        );
-        const categoryQuizzes = (quizData || []).filter(q => 
-          q.category === category?.name || q.category === category?.id
-        );
-        
-        setFlashcards(categoryFlashcards);
-        setQuizBank(categoryQuizzes);
-      } catch (error) {
-        console.error('Error loading category data:', error);
-        setError('Failed to load data. Please check your connection.');
-        setFlashcards([]);
-        setQuizBank([]);
-      } finally {
-        setLoading(false);
-      }
-    };
+    // Simulate loading
+    const timer = setTimeout(() => {
+      setLoading(false);
+    }, 1000);
 
-    if (category) {
-      loadData();
-    }
-  }, [category]);
-
-  // Filter flashcards by level and search term
-  const filteredFlashcards = useMemo(() => {
-    if (!flashcards || !Array.isArray(flashcards)) return [];
-    
-    return flashcards.filter(card => {
-      const matchesLevel = !level || card.level === level;
-      const matchesSearch = !searchTerm || 
-        (card.term && card.term.toLowerCase().includes(searchTerm.toLowerCase())) ||
-        (card.definition && card.definition.toLowerCase().includes(searchTerm.toLowerCase()));
-      return matchesLevel && matchesSearch;
-    });
-  }, [flashcards, level, searchTerm]);
-
-  // Filter quiz questions by level and search term
-  const filteredQuizQuestions = useMemo(() => {
-    if (!quizBank || !Array.isArray(quizBank)) return [];
-    
-    return quizBank.filter(question => {
-      const matchesLevel = !level || question.level === level;
-      const matchesSearch = !searchTerm || 
-        (question.question && question.question.toLowerCase().includes(searchTerm.toLowerCase()));
-      return matchesLevel && matchesSearch;
-    });
-  }, [quizBank, level, searchTerm]);
-
-  // Filter test questions by search term (all levels)
-  const filteredTestQuestions = useMemo(() => {
-    if (!quizBank || !Array.isArray(quizBank)) return [];
-    
-    return quizBank.filter(question => {
-      const matchesSearch = !searchTerm || 
-        (question.question && question.question.toLowerCase().includes(searchTerm.toLowerCase()));
-      return matchesSearch;
-    });
-  }, [quizBank, searchTerm]);
-
-  // Get 3 random flashcards for display
-  const displayedFlashcards = useMemo(() => {
-    try {
-      if (filteredFlashcards.length === 0) return [];
-      const shuffled = [...filteredFlashcards].sort(() => Math.random() - 0.5);
-      return shuffled.slice(0, 3);
-    } catch (error) {
-      console.error('Error getting displayed flashcards:', error);
-      return [];
-    }
-  }, [filteredFlashcards]);
-
-  // Filter quizzes by level
-  const levelQuizzes = useMemo(() => {
-    try {
-      return (quizBank || []).filter(q => q.level === level);
-    } catch (error) {
-      console.error('Error filtering quizzes:', error);
-      return [];
-    }
-  }, [quizBank, level]);
-
-  const startQuiz = () => {
-    setTimerDuration(15 * 60); // 15 minutes
-    setTimerTitle('Quiz Timer');
-    setShowTimer(true);
-    setShowQuiz(true);
-  };
-
-  const startTest = () => {
-    setTimerDuration(30 * 60); // 30 minutes
-    setTimerTitle('Final Test Timer');
-    setShowTimer(true);
-    setShowTest(true);
-  };
-
-  const handleTimeUp = () => {
-    setShowTimer(false);
-    // Auto-submit quiz/test
-    if (showQuiz) {
-      // Handle quiz submission
-    }
-    if (showTest) {
-      // Handle test submission
-    }
-  };
-
-  const closeTimer = () => {
-    setShowTimer(false);
-  };
+    return () => clearTimeout(timer);
+  }, []);
 
   if (error) {
     return (
@@ -233,227 +94,24 @@ export default function CategoryPage() {
       </header>
 
       <div className="max-w-6xl mx-auto px-4 py-6">
-        {/* Level Selector */}
-        <div className="mb-6">
-          <div className="flex items-center gap-4 mb-4">
-            <h2 className="text-lg font-semibold">Difficulty Level:</h2>
-            <div className="flex gap-2">
-              {DIFFICULTY_LEVELS.map((difficulty) => (
-                <button
-                  key={difficulty.id}
-                  onClick={() => setLevel(difficulty.id)}
-                  className={`px-4 py-2 rounded-lg border transition-colors ${
-                    level === difficulty.id
-                      ? difficulty.id === 'beginner' 
-                        ? 'bg-green-500 text-white border-green-500'
-                        : difficulty.id === 'intermediate'
-                        ? 'bg-yellow-500 text-white border-yellow-500'
-                        : 'bg-red-500 text-white border-red-500'
-                      : 'bg-white text-gray-700 border-gray-300 hover:bg-gray-50'
-                  }`}
-                >
-                  {difficulty.name}
-                </button>
-              ))}
-            </div>
-          </div>
-        </div>
-
-        {/* Search */}
-        <div className="mb-6">
-          <div className="relative max-w-md">
-            <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-5 h-5" />
-            <input
-              type="text"
-              placeholder="Search flashcards..."
-              value={searchTerm}
-              onChange={(e) => setSearchTerm(e.target.value)}
-              className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-            />
-          </div>
-        </div>
-
-        <div className="grid gap-6">
-          {/* Flashcards Section */}
-          <div
-            className="bg-white rounded-2xl border shadow-sm"
-          >
-            <div className="p-6">
-              <div className="flex items-center justify-between mb-6">
-                <div className="flex items-center gap-3">
-                  <BookOpen className="w-6 h-6 text-blue-500" />
-                  <h2 className="text-xl font-semibold text-gray-800">
-                    Flashcards
-                  </h2>
-                </div>
-                <div className="text-sm text-gray-500">
-                  {filteredFlashcards.length} cards
-                </div>
-              </div>
-
-              {loading ? (
-                <div className="text-center py-8">
-                  <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-500 mx-auto"></div>
-                  <p className="text-gray-600 mt-2">Loading flashcards...</p>
-                </div>
-              ) : displayedFlashcards.length > 0 ? (
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                  {displayedFlashcards.map((card, index) => (
-                    <div key={card.id || index}>
-                      <Flashcard card={card} />
-                    </div>
-                  ))}
-                </div>
-              ) : (
-                <div className="text-center py-8">
-                  <BookOpen className="w-12 h-12 text-gray-400 mx-auto mb-3" />
-                  <p className="text-gray-600">
-                    No flashcards found for this category and level.
-                  </p>
-                </div>
-              )}
-            </div>
-          </div>
-
-          {/* Quiz and Test Section */}
-          <div
-            className="bg-white rounded-2xl border shadow-sm"
-          >
-            <div className="p-6">
-              <div className="flex items-center justify-between mb-6">
-                <div className="flex items-center gap-3">
-                  <GraduationCap className="w-6 h-6 text-green-500" />
-                  <h2 className="text-xl font-semibold text-gray-800">
-                    Assessments
-                  </h2>
-                </div>
-              </div>
-
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                {/* Quiz */}
-                <div className="border rounded-xl p-4">
-                  <div className="flex items-center justify-between mb-4">
-                    <h3 className="font-semibold text-gray-800">Practice Quiz</h3>
-                    <span className="text-sm text-gray-500">
-                      {filteredQuizQuestions.length} questions
-                    </span>
-                  </div>
-                  
-                  {filteredQuizQuestions.length > 0 ? (
-                    <div className="space-y-3">
-                      <button
-                        onClick={() => {
-                          setShowQuiz(true);
-                          setShowTimer(true);
-                          setTimerDuration(300); // 5 minutes
-                          setTimerTitle("Quiz Timer");
-                        }}
-                        className="w-full px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition-colors"
-                      >
-                        Start Quiz (5 min)
-                      </button>
-                      <p className="text-xs text-gray-600">
-                        Timed quiz with {filteredQuizQuestions.length} questions
-                      </p>
-                    </div>
-                  ) : (
-                    <p className="text-sm text-gray-600">No quiz questions available.</p>
-                  )}
-                </div>
-
-                {/* Final Test */}
-                <div className="border rounded-xl p-4">
-                  <div className="flex items-center justify-between mb-4">
-                    <h3 className="font-semibold text-gray-800">Final Test</h3>
-                    <span className="text-sm text-gray-500">
-                      {filteredTestQuestions.length} questions
-                    </span>
-                  </div>
-                  
-                  {filteredTestQuestions.length > 0 ? (
-                    <div className="space-y-3">
-                      <button
-                        onClick={() => {
-                          setShowTest(true);
-                          setShowTimer(true);
-                          setTimerDuration(1800); // 30 minutes
-                          setTimerTitle("Final Test Timer");
-                        }}
-                        className="w-full px-4 py-2 bg-green-500 text-white rounded-lg hover:bg-green-600 transition-colors"
-                      >
-                        Start Final Test (30 min)
-                      </button>
-                      <p className="text-xs text-gray-600">
-                        Comprehensive test with {filteredTestQuestions.length} questions
-                      </p>
-                    </div>
-                  ) : (
-                    <p className="text-sm text-gray-600">No test questions available.</p>
-                  )}
-                </div>
-              </div>
-            </div>
-          </div>
-
-          {/* Pest Identification Section */}
-          <div
-            className="bg-white rounded-2xl border shadow-sm"
-          >
-            <div className="p-6">
-              <div className="flex items-center gap-3 mb-6">
-                <Camera className="w-6 h-6 text-purple-500" />
-                <h2 className="text-xl font-semibold text-gray-800">
-                  Pest Identification Training
-                </h2>
-              </div>
-              
-              <PestIdentification 
-                category={category.name}
-                level={level}
-              />
-            </div>
+        <div className="bg-white rounded-2xl border shadow-sm p-6">
+          <h2 className="text-xl font-semibold text-gray-800 mb-4">
+            Category Content
+          </h2>
+          <p className="text-gray-600">
+            This is a simplified version of the category page. The full content will be loaded once we resolve any issues.
+          </p>
+          <div className="mt-4 p-4 bg-gray-50 rounded-lg">
+            <h3 className="font-semibold mb-2">Category Details:</h3>
+            <ul className="text-sm text-gray-600 space-y-1">
+              <li><strong>ID:</strong> {category.id}</li>
+              <li><strong>Name:</strong> {category.name}</li>
+              <li><strong>Slug:</strong> {category.slug}</li>
+              <li><strong>Description:</strong> {category.description}</li>
+            </ul>
           </div>
         </div>
       </div>
-
-      {/* Timer Modal */}
-      <Timer
-        duration={timerDuration}
-        onTimeUp={handleTimeUp}
-        isVisible={showTimer}
-        onClose={closeTimer}
-        title={timerTitle}
-      />
-
-      {/* Quiz Modal */}
-      {showQuiz && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50">
-          <div className="bg-white rounded-2xl max-w-4xl w-full mx-4 max-h-[90vh] overflow-y-auto">
-            <Quiz 
-              questions={levelQuizzes.slice(0, 10)} // First 10 questions
-              onComplete={(score) => {
-                setShowQuiz(false);
-                // Handle quiz completion
-              }}
-            />
-          </div>
-        </div>
-      )}
-
-      {/* Test Modal */}
-      {showTest && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50">
-          <div className="bg-white rounded-2xl max-w-4xl w-full mx-4 max-h-[90vh] overflow-y-auto">
-            <FinalExam 
-              questions={levelQuizzes} // All questions for final test
-              onComplete={(score) => {
-                setShowTest(false);
-                // Handle test completion
-              }}
-            />
-          </div>
-        </div>
-      )}
     </div>
   );
 }
