@@ -13,16 +13,21 @@ export async function fetchFlashcards() {
   try {
     // Check if Supabase is configured
     if (!supabaseUrl || !supabaseKey) {
-      throw new Error('Supabase not configured - missing VITE_SUPABASE_URL or VITE_SUPABASE_KEY environment variables');
+      console.warn('Supabase not configured - returning empty array');
+      return [];
     }
 
     if (!supabase) {
-      throw new Error('Supabase client not initialized');
+      console.warn('Supabase client not initialized - returning empty array');
+      return [];
     }
 
     console.log('Attempting to fetch flashcards from Supabase...');
     const { data, error } = await supabase.from('flashcards').select('*');
-    if (error) throw error;
+    if (error) {
+      console.error('Supabase error fetching flashcards:', error);
+      return [];
+    }
     
     console.log('Flashcards fetched successfully:', data?.length || 0, 'items');
     return (data || []).map(f => ({
@@ -39,7 +44,7 @@ export async function fetchFlashcards() {
     }));
   } catch (error) {
     console.error('Error fetching flashcards:', error);
-    throw error;
+    return [];
   }
 }
 
@@ -48,16 +53,21 @@ export async function fetchQuizBank() {
   try {
     // Check if Supabase is configured
     if (!supabaseUrl || !supabaseKey) {
-      throw new Error('Supabase not configured - missing VITE_SUPABASE_URL or VITE_SUPABASE_KEY environment variables');
+      console.warn('Supabase not configured - returning empty array');
+      return [];
     }
 
     if (!supabase) {
-      throw new Error('Supabase client not initialized');
+      console.warn('Supabase client not initialized - returning empty array');
+      return [];
     }
 
     console.log('Attempting to fetch quiz bank from Supabase...');
     const { data, error } = await supabase.from('quizzes').select('*');
-    if (error) throw error;
+    if (error) {
+      console.error('Supabase error fetching quiz bank:', error);
+      return [];
+    }
     
     console.log('Quiz bank fetched successfully:', data?.length || 0, 'items');
     return (data || []).map(q => {
@@ -73,6 +83,6 @@ export async function fetchQuizBank() {
     });
   } catch (error) {
     console.error('Error fetching quiz bank:', error);
-    throw error;
+    return [];
   }
 }

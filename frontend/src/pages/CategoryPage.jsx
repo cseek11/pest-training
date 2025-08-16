@@ -27,6 +27,7 @@ export default function CategoryPage() {
   const [level, setLevel] = useState('beginner');
   const [searchTerm, setSearchTerm] = useState('');
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
   const [showQuiz, setShowQuiz] = useState(false);
   const [showTest, setShowTest] = useState(false);
   const [showTimer, setShowTimer] = useState(false);
@@ -39,16 +40,18 @@ export default function CategoryPage() {
     const loadData = async () => {
       try {
         setLoading(true);
+        setError(null);
+        
         const [flashcardData, quizData] = await Promise.all([
           fetchFlashcards(),
           fetchQuizBank()
         ]);
         
         // Filter by category
-        const categoryFlashcards = flashcardData.filter(f => 
+        const categoryFlashcards = (flashcardData || []).filter(f => 
           f.category === category?.name || f.category === category?.id
         );
-        const categoryQuizzes = quizData.filter(q => 
+        const categoryQuizzes = (quizData || []).filter(q => 
           q.category === category?.name || q.category === category?.id
         );
         
@@ -56,6 +59,9 @@ export default function CategoryPage() {
         setQuizBank(categoryQuizzes);
       } catch (error) {
         console.error('Error loading category data:', error);
+        setError('Failed to load data. Please check your connection.');
+        setFlashcards([]);
+        setQuizBank([]);
       } finally {
         setLoading(false);
       }
@@ -68,30 +74,45 @@ export default function CategoryPage() {
 
   // Filter flashcards by level and search
   const filteredFlashcards = useMemo(() => {
-    let filtered = flashcards.filter(f => f.level === level);
-    
-    if (searchTerm) {
-      const needle = searchTerm.toLowerCase();
-      filtered = filtered.filter(f =>
-        ((f.term || f.title || '') + ' ' + (f.def || f.description || ''))
-          .toLowerCase()
-          .includes(needle)
-      );
+    try {
+      let filtered = (flashcards || []).filter(f => f.level === level);
+      
+      if (searchTerm) {
+        const needle = searchTerm.toLowerCase();
+        filtered = filtered.filter(f =>
+          ((f.term || f.title || '') + ' ' + (f.def || f.description || ''))
+            .toLowerCase()
+            .includes(needle)
+        );
+      }
+      
+      return filtered;
+    } catch (error) {
+      console.error('Error filtering flashcards:', error);
+      return [];
     }
-    
-    return filtered;
   }, [flashcards, level, searchTerm]);
 
   // Get 3 random flashcards for display
   const displayedFlashcards = useMemo(() => {
-    if (filteredFlashcards.length === 0) return [];
-    const shuffled = [...filteredFlashcards].sort(() => Math.random() - 0.5);
-    return shuffled.slice(0, 3);
+    try {
+      if (filteredFlashcards.length === 0) return [];
+      const shuffled = [...filteredFlashcards].sort(() => Math.random() - 0.5);
+      return shuffled.slice(0, 3);
+    } catch (error) {
+      console.error('Error getting displayed flashcards:', error);
+      return [];
+    }
   }, [filteredFlashcards]);
 
   // Filter quizzes by level
   const levelQuizzes = useMemo(() => {
-    return quizBank.filter(q => q.level === level);
+    try {
+      return (quizBank || []).filter(q => q.level === level);
+    } catch (error) {
+      console.error('Error filtering quizzes:', error);
+      return [];
+    }
   }, [quizBank, level]);
 
   const startQuiz = () => {
@@ -142,6 +163,20 @@ export default function CategoryPage() {
         <div className="text-center">
           <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-500 mx-auto mb-4"></div>
           <p className="text-gray-600">Loading {category.name}...</p>
+        </div>
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        <div className="text-center">
+          <h1 className="text-2xl font-bold text-gray-800 mb-4">Error Loading Data</h1>
+          <p className="text-gray-600 mb-4">{error}</p>
+          <Link to="/" className="text-blue-500 hover:underline">
+            Return to Home
+          </Link>
         </div>
       </div>
     );
