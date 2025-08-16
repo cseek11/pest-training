@@ -7,9 +7,11 @@ export default function HomePage() {
   return (
     <div className="max-w-4xl mx-auto p-8 text-center rounded-2xl shadow-lg bg-[#F5F7FA]">
       <div className="flex flex-col items-center mb-8">
-        <img src={veropestLogo} alt="VeroPest Logo" className="h-16 mb-6 drop-shadow-lg" />
+        <div className="max-w-full bg-[#000000ff]">
+          <img src={veropestLogo} alt="VeroPest Logo" className="h-16 mb-6 drop-shadow-lg" />
+        </div>
         <h1 className="text-4xl font-extrabold tracking-tight mb-4 text-[#a880b9] drop-shadow-md">VeroTraining</h1>
-        <p className="text-lg font-medium text-[#4db848]">Empowering learners for PA & National certification</p>
+        <p className="text-lg font-medium text-[#4db848]">Empowering Learners for PA & National Certification</p>
       </div>
 
       <section className="mb-10">
