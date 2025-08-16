@@ -9,7 +9,8 @@ import {
   ListChecks,
   Trophy,
   Bug,
-  XCircle
+  XCircle,
+  AlertCircle
 } from 'lucide-react';
 
 // -------------------- Constants & Utils --------------------
@@ -260,6 +261,7 @@ export default function App() {
   const [level, setLevel] = useState('beginner');
   const [q, setQ] = useState('');
   const [loading, setLoading] = useState(true);
+  const [supabaseConfigured, setSupabaseConfigured] = useState(true);
 
   // Fetch flashcards and quiz bank from Supabase
   const fetchAndSetContent = async () => {
@@ -271,10 +273,12 @@ export default function App() {
       ]);
       setFlashcards(Array.isArray(flashcardData) ? flashcardData : FALLBACK_FLASHCARDS);
       setQuizBank(Array.isArray(quizData) ? quizData : FALLBACK_QUIZ);
+      setSupabaseConfigured(true);
     } catch (error) {
       console.error('Error fetching content:', error);
       setFlashcards(FALLBACK_FLASHCARDS);
       setQuizBank(FALLBACK_QUIZ);
+      setSupabaseConfigured(false);
     } finally {
       setLoading(false);
     }
@@ -369,13 +373,20 @@ export default function App() {
             </div>
             {loading ? (
               <p className="text-sm text-gray-600">Loading flashcards…</p>
-            ) : filteredFlash.length === 0 ? (
-              <p className="text-sm text-gray-600">No flashcards available for this level and search.</p>
+            ) : supabaseConfigured ? (
+              filteredFlash.length === 0 ? (
+                <p className="text-sm text-gray-600">No flashcards available for this level and search.</p>
+              ) : (
+                <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
+                  {displayedFlashcards.map(f => (
+                    <Flashcard key={f.id || f.term || f.title} item={f} />
+                  ))}
+                </div>
+              )
             ) : (
-              <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
-                {displayedFlashcards.map(f => (
-                  <Flashcard key={f.id || f.term || f.title} item={f} />
-                ))}
+              <div className="flex items-center gap-2 text-red-500 text-sm">
+                <AlertCircle className="w-4 h-4" />
+                Supabase not configured. Please check your environment variables.
               </div>
             )}
           </SectionCard>
