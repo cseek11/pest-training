@@ -15,6 +15,10 @@ export async function fetchFlashcards() {
     level: f.level,
     term: f.term,
     id: f.id,
+    category: f.category,
+    source_main: f.source_main,
+    source_external: f.source_external,
+    jurisdiction_tag: f.jurisdiction_tag,
   }));
 }
 
