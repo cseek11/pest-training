@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useMemo, useRef } from 'react';
-import { fetchContent } from './api';
+import { fetchFlashcards, fetchQuizBank } from './api';
 import { MotionConfig, motion } from 'framer-motion';
 import {
   Search,
@@ -13,12 +13,8 @@ import {
 } from 'lucide-react';
 
 // -------------------- Constants & Utils --------------------
-const FALLBACK = {
-  core_exam: [],
-  categories: {},
-  flashcards: [],
-  links: { national: [], pennsylvania: [] }
-};
+const FALLBACK_FLASHCARDS = [];
+const FALLBACK_QUIZ = [];
 
 function pickByLevel(items, level) {
   if (!Array.isArray(items)) return [];
@@ -258,21 +254,26 @@ function ModuleQuiz({ title, bank, level, timed = false, durationMinutes = 0 }) 
 }
 
 // -------------------- Main App --------------------
-export default function App() {
-  const [content, setContent] = useState(FALLBACK);
+  const [flashcards, setFlashcards] = useState(FALLBACK_FLASHCARDS);
+  const [quizBank, setQuizBank] = useState(FALLBACK_QUIZ);
   const [level, setLevel] = useState('beginner');
   const [q, setQ] = useState('');
   const [loading, setLoading] = useState(true);
 
-  // Fetch content function for reload
+  // Fetch flashcards and quiz bank from Supabase
   const fetchAndSetContent = async () => {
     try {
       setLoading(true);
-      const data = await fetchContent();
-      if (data) setContent(data);
+      const [flashcardData, quizData] = await Promise.all([
+        fetchFlashcards(),
+        fetchQuizBank()
+      ]);
+      setFlashcards(Array.isArray(flashcardData) ? flashcardData : FALLBACK_FLASHCARDS);
+      setQuizBank(Array.isArray(quizData) ? quizData : FALLBACK_QUIZ);
     } catch (error) {
       console.error('Error fetching content:', error);
-      setContent(FALLBACK);
+      setFlashcards(FALLBACK_FLASHCARDS);
+      setQuizBank(FALLBACK_QUIZ);
     } finally {
       setLoading(false);
     }
@@ -282,9 +283,9 @@ export default function App() {
     fetchAndSetContent();
   }, []);
 
-  const filteredFlash = React.useMemo(() => {
+  const filteredFlash = useMemo(() => {
     try {
-      const base = pickByLevel(content.flashcards || [], level);
+      const base = pickByLevel(flashcards, level);
       if (!q) return base;
       const needle = q.toLowerCase();
       return base.filter(t =>
@@ -296,10 +297,10 @@ export default function App() {
       console.error('Error filtering flashcards:', error);
       return [];
     }
-  }, [content, level, q]);
+  }, [flashcards, level, q]);
 
   // Get 3 random flashcards
-  const displayedFlashcards = React.useMemo(() => {
+  const displayedFlashcards = useMemo(() => {
     if (filteredFlash.length === 0) return [];
     const shuffled = [...filteredFlash].sort(() => Math.random() - 0.5);
     return shuffled.slice(0, 3);
@@ -366,7 +367,7 @@ export default function App() {
               </button>
             </div>
             {loading ? (
-              <p className="text-sm text-gray-600">Loading content…</p>
+              <p className="text-sm text-gray-600">Loading flashcards…</p>
             ) : filteredFlash.length === 0 ? (
               <p className="text-sm text-gray-600">No flashcards available for this level and search.</p>
             ) : (
@@ -382,7 +383,7 @@ export default function App() {
           <SectionCard icon={GraduationCap} title="Core Exam Quiz">
             <ModuleQuiz
               title="Core Exam"
-              bank={content.core_exam}
+              bank={quizBank}
               level={level}
               timed={true}
               durationMinutes={10}

@@ -1,7 +1,18 @@
-import axios from 'axios';
-const baseURL = import.meta.env.VITE_API_URL || '';
-export const api = axios.create({ baseURL, timeout: 15000 });
-export async function fetchContent() {
-  try { const res = await api.get('/api/content'); return res.data; }
-  catch (e) { console.warn('Falling back to embedded content.', e?.message); return null; }
+// Fetch quiz questions from Supabase
+export async function fetchQuizBank() {
+  const { data, error } = await supabase.from('core_exam').select('*');
+  if (error) throw error;
+  return data;
+}
+import { createClient } from '@supabase/supabase-js';
+
+const supabaseUrl = import.meta.env.VITE_SUPABASE_URL;
+const supabaseKey = import.meta.env.VITE_SUPABASE_KEY;
+export const supabase = createClient(supabaseUrl, supabaseKey);
+
+// Example: fetch all flashcards
+export async function fetchFlashcards() {
+  const { data, error } = await supabase.from('flashcards').select('*');
+  if (error) throw error;
+  return data;
 }
