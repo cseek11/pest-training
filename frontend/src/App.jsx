@@ -65,12 +65,10 @@ function Flashcard({ item }) {
   const [flip, setFlip] = useState(false);
 
   return (
-    <div
-      className="cursor-pointer"
-      onClick={() => setFlip(f => !f)}
-      aria-pressed={flip}
-    >
-      <motion.div
+      </div>
+    </MotionConfig>
+  );
+}
         className="rounded-2xl border p-4 bg-white shadow-sm min-h-[120px] flex items-center justify-center text-center relative"
         initial={false}
         animate={{ rotateY: flip ? 180 : 0 }}
@@ -254,6 +252,7 @@ function ModuleQuiz({ title, bank, level, timed = false, durationMinutes = 0 }) 
 }
 
 // -------------------- Main App --------------------
+export default function App() {
   const [flashcards, setFlashcards] = useState(FALLBACK_FLASHCARDS);
   const [quizBank, setQuizBank] = useState(FALLBACK_QUIZ);
   const [level, setLevel] = useState('beginner');
