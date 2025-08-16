@@ -397,6 +397,7 @@ export default function App() {
               © {new Date().getFullYear()} Pest Control Training — PA & National. Educational use only.
             </p>
           </div>
+
         </main>
       </div>
     </MotionConfig>
