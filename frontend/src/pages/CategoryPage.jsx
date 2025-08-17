@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import { fetchFlashcards, fetchQuizBank } from '../api';
+import Flashcard from '../components/Flashcard';
 
 const LEVELS = ['beginner', 'intermediate', 'advanced'];
 
@@ -61,11 +62,7 @@ export default function CategoryPage() {
       {!loading && !error && (
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
           {displayedFlashcards.map(f => (
-            <div key={f.id || f.term} className="border rounded p-4 bg-white shadow">
-              <div className="font-bold mb-2">{f.term}</div>
-              <div>{f.def}</div>
-              {f.image_url && <img src={f.image_url} alt={f.term} className="mt-2 max-h-32" />}
-            </div>
+            <Flashcard key={f.id || f.term} card={f} />
           ))}
         </div>
       )}
