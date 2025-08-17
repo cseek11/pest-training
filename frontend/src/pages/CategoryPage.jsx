@@ -10,27 +10,41 @@ export default function CategoryPage() {
   const [flashcards, setFlashcards] = useState([]);
   const [quiz, setQuiz] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
 
   const loadData = async () => {
     setLoading(true);
-    const [fc, qz] = await Promise.all([
-      fetchFlashcards({ category: categorySlug, level }),
-      fetchQuizBank({ category: categorySlug, level })
-    ]);
-    setFlashcards(fc);
-    setQuiz(qz);
-    setLoading(false);
+    setError(null);
+    try {
+      const [fc, qz] = await Promise.all([
+        fetchFlashcards({ category: categorySlug, level }),
+        fetchQuizBank({ category: categorySlug, level })
+      ]);
+      setFlashcards(fc);
+      setQuiz(qz);
+    } catch (e) {
+      console.error(e);
+      setError(e?.message || 'Failed to load data');
+      setFlashcards([]);
+      setQuiz([]);
+    } finally {
+      setLoading(false);
+    }
   };
 
   useEffect(() => {
     loadData();
   }, [categorySlug, level]);
 
-  // Pick 3 random flashcards
+  // Pick 3 random flashcards (Fisher–Yates shuffle)
   const displayedFlashcards = React.useMemo(() => {
     if (!flashcards.length) return [];
-    const shuffled = [...flashcards].sort(() => Math.random() - 0.5);
-    return shuffled.slice(0, 3);
+    const arr = [...flashcards];
+    for (let i = arr.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [arr[i], arr[j]] = [arr[j], arr[i]];
+    }
+    return arr.slice(0, 3);
   }, [flashcards]);
 
   return (
@@ -42,7 +56,9 @@ export default function CategoryPage() {
         ))}
       </div>
       <h3 className="text-lg font-semibold mb-2">Flashcards</h3>
-      {loading ? <p>Loading…</p> : (
+      {loading && <p>Loading…</p>}
+      {!loading && error && <p className="text-red-600">Error: {error}</p>}
+      {!loading && !error && (
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
           {displayedFlashcards.map(f => (
             <div key={f.id || f.term} className="border rounded p-4 bg-white shadow">
@@ -53,7 +69,9 @@ export default function CategoryPage() {
           ))}
         </div>
       )}
-      <button onClick={loadData} className="mt-4 px-4 py-2 bg-green-500 text-white rounded">Refresh Flashcards</button>
+      <button onClick={loadData} className="mt-4 px-4 py-2 bg-green-500 text-white rounded" disabled={loading}>
+        {loading ? 'Refreshing…' : 'Refresh Flashcards'}
+      </button>
       <h3 className="text-lg font-semibold mt-8 mb-2">Quiz</h3>
       {/* Render quiz questions here, similar logic */}
       {/* ... */}
