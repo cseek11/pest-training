@@ -1,6 +1,6 @@
 import { useState } from 'react'
 
-export default function Flashcard({ card }) {
+export default function flashcards({ card }) {
   const [flipped, setFlipped] = useState(false)
   return (
     <div onClick={()=>setFlipped(!flipped)} className="cursor-pointer rounded-2xl border bg-white p-4 shadow-sm min-h-[160px] flex flex-col items-center text-center">
