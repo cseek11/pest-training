@@ -1,6 +1,6 @@
 // List of all categories for flashcards/quizzes
 export const CATEGORIES = [
-  { slug: 'general', name: 'General Knowledge' },
+  { slug: 'biology', name: 'Biology' },
   { slug: 'insects', name: 'Insects' },
   { slug: 'rodents', name: 'Rodents' },
   { slug: 'weeds', name: 'Weeds' },

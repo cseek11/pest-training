@@ -72,6 +72,16 @@ export default function CategoryPage() {
     return arr.slice(0, 3);
   }, [flashcards]);
 
+  const debugMeta = React.useMemo(() => {
+    const fields = ['category','category_slug','category_name','subject','topic','group','tag','level'];
+    const meta = {};
+    fields.forEach(f => {
+      const vals = Array.from(new Set((flashcards || []).map(x => x?.[f]).filter(Boolean)));
+      if (vals.length) meta[f] = vals.slice(0, 20);
+    });
+    return meta;
+  }, [flashcards]);
+
   return (
     <div className="max-w-4xl mx-auto p-4">
       <h2 className="text-2xl font-bold mb-4">Category: {categorySlug}</h2>
@@ -86,6 +96,12 @@ export default function CategoryPage() {
       {!loading && !error && import.meta.env.DEV && (
         <div className="text-xs text-gray-500 mb-2">
           Debug: category={categorySlug}, level={level}, total={flashcards.length}, displayed={displayedFlashcards.length}
+        </div>
+      )}
+      {!loading && !error && import.meta.env.DEV && Object.keys(debugMeta).length > 0 && (
+        <div className="text-xs text-gray-600 mb-2">
+          <div>Detected category fields and values:</div>
+          <pre className="bg-gray-50 border rounded p-2 overflow-auto max-h-40">{JSON.stringify(debugMeta, null, 2)}</pre>
         </div>
       )}
       {!loading && !error && !!fallbackMessage && (

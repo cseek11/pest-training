@@ -19,6 +19,16 @@ function slugToName(slug) {
   return found?.name || null;
 }
 
+// Build candidate category values from a slug
+function candidatesFromSlug(slug) {
+  if (!slug) return [];
+  const spaced = slug.replace(/-/g, ' ');
+  const title = spaced.replace(/\b\w/g, (c) => c.toUpperCase());
+  const friendly = slugToName(slug);
+  const set = new Set([slug, spaced, title, friendly].filter(Boolean));
+  return Array.from(set);
+}
+
 // Fetch flashcards with optional filters
 export async function fetchFlashcards({ category, level, imageOnly } = {}) {
   try {
@@ -31,7 +41,7 @@ export async function fetchFlashcards({ category, level, imageOnly } = {}) {
 
     const buildBase = () => {
       let q = supabase.from('flashcards').select('*');
-      if (level) q = q.ilike('level', level);
+      if (level) q = q.ilike('level', `%${level}%`);
       if (imageOnly) q = q.not('image_url', 'is', null);
       return q;
     };
@@ -48,19 +58,22 @@ export async function fetchFlashcards({ category, level, imageOnly } = {}) {
         data = [];
       }
 
-      // Fallback A: try slug directly in 'category' column
+      // Fallback A: try exact matches on 'category' for multiple candidates
       if (!data.length) {
-        const { data: d2a, error: e2a } = await buildBase().eq('category', category);
-        if (e2a) throw e2a;
-        data = d2a || [];
+        const candidates = candidatesFromSlug(category);
+        for (const cand of candidates) {
+          const { data: d2a, error: e2a } = await buildBase().eq('category', cand);
+          if (e2a) throw e2a;
+          if (d2a?.length) { data = d2a; break; }
+        }
       }
-      // Fallback B: try friendly name in 'category' column (case-insensitive)
+      // Fallback B: try wildcard matches on 'category' (ILIKE)
       if (!data.length) {
-        const name = slugToName(category);
-        if (name) {
-          const { data: d2b, error: e2b } = await buildBase().ilike('category', name);
+        const candidates = candidatesFromSlug(category);
+        for (const cand of candidates) {
+          const { data: d2b, error: e2b } = await buildBase().ilike('category', `%${cand}%`);
           if (e2b) throw e2b;
-          data = d2b || [];
+          if (d2b?.length) { data = d2b; break; }
         }
       }
     } else {
@@ -99,7 +112,7 @@ export async function fetchQuizBank({ category, level } = {}) {
 
     const buildBase = () => {
       let q = supabase.from('quizzes').select('*');
-      if (level) q = q.ilike('level', level);
+      if (level) q = q.ilike('level', `%${level}%`);
       return q;
     };
 
@@ -115,19 +128,22 @@ export async function fetchQuizBank({ category, level } = {}) {
         data = [];
       }
 
-      // Fallback A: try slug directly in 'category' column
+      // Fallback A: try exact matches on 'category' for multiple candidates
       if (!data.length) {
-        const { data: d2a, error: e2a } = await buildBase().eq('category', category);
-        if (e2a) throw e2a;
-        data = d2a || [];
+        const candidates = candidatesFromSlug(category);
+        for (const cand of candidates) {
+          const { data: d2a, error: e2a } = await buildBase().eq('category', cand);
+          if (e2a) throw e2a;
+          if (d2a?.length) { data = d2a; break; }
+        }
       }
-      // Fallback B: try friendly name (case-insensitive)
+      // Fallback B: try wildcard matches on 'category' (ILIKE)
       if (!data.length) {
-        const name = slugToName(category);
-        if (name) {
-          const { data: d2b, error: e2b } = await buildBase().ilike('category', name);
+        const candidates = candidatesFromSlug(category);
+        for (const cand of candidates) {
+          const { data: d2b, error: e2b } = await buildBase().ilike('category', `%${cand}%`);
           if (e2b) throw e2b;
-          data = d2b || [];
+          if (d2b?.length) { data = d2b; break; }
         }
       }
     } else {
