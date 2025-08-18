@@ -101,18 +101,21 @@ export default function LoginPage() {
   }
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-50 p-4">
-      <div className="w-full max-w-md rounded-2xl border bg-white p-6 shadow-sm">
-        <h1 className="text-2xl font-bold mb-2 text-center">
-          {mode === 'reset' ? 'Set New Password' : mode === 'request' ? 'Password Reset' : 'Login'}
-        </h1>
-        <p className="text-sm text-gray-600 mb-6 text-center">
-          {mode === 'reset'
-            ? 'Enter a new password for your account.'
-            : mode === 'request'
-            ? 'Enter your email to receive a password reset link.'
-            : 'Sign in with your credentials.'}
-        </p>
+      <div className="min-h-screen flex items-center justify-center bg-gray-50 p-4">
+    <div className="w-full max-w-md rounded-2xl border bg-white p-6 shadow-sm">
+      <h1 className="text-3xl font-extrabold mb-4 text-[#a880b9] text-center drop-shadow">
+        VeroTraining
+      </h1>
+      <h2 className="text-2xl font-bold mb-2 text-center">
+        {mode === 'reset' ? 'Set New Password' : mode === 'request' ? 'Password Reset' : 'Login'}
+      </h2>
+      <p className="text-sm text-gray-600 mb-6 text-center">
+        {mode === 'reset'
+          ? 'Enter a new password for your account.'
+          : mode === 'request'
+          ? 'Enter your email to receive a password reset link.'
+          : 'Sign in with your credentials.'}
+      </p>
 
         {message && <div className="mb-3 text-sm text-green-700 bg-green-50 border border-green-200 rounded px-3 py-2">{message}</div>}
         {error && <div className="mb-3 text-sm text-red-700 bg-red-50 border border-red-200 rounded px-3 py-2">{error}</div>}
