@@ -15,7 +15,7 @@ export default function LoginPage() {
   const [error, setError] = useState('');
   const [message, setMessage] = useState('');
 
-  const from = (location.state && location.state.from) || '/admin';
+  const from = (location.state && location.state.from) || '/';
 
   useEffect(() => {
     // If Supabase redirected here with a recovery token, switch to reset mode
@@ -87,8 +87,9 @@ export default function LoginPage() {
       if (error) throw error;
       if (data?.user) {
         setMessage('Password updated successfully. Signing you in…');
-        // After successful reset, navigate to admin (session should already be established by recovery)
-        setTimeout(() => navigate('/admin', { replace: true }), 600);
+        // After successful reset, navigate to 
+        //  (session should already be established by recovery)
+        setTimeout(() => navigate('/', { replace: true }), 600);
       } else {
         setError('Unexpected error: No user returned.');
       }
