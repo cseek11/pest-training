@@ -17,6 +17,9 @@ import HomePage from './pages/HomePage';
 import CategoryPage from './pages/CategoryPage';
 import PestIdentificationPage from './pages/PestIdentificationPage';
 import AdminPage from './pages/AdminPage';
+import LoginPage from './pages/LoginPage';
+import { supabase } from './lib/supabaseClient';
+import { Navigate, useLocation } from 'react-router-dom';
 
 // -------------------- Constants & Utils --------------------
 const FALLBACK_FLASHCARDS = [];
@@ -108,6 +111,36 @@ function Flashcard({ item }) {
   );
 }
 
+// -------------------- Auth Guard --------------------
+function ProtectedRoute({ children }) {
+  const location = useLocation();
+  const [loading, setLoading] = useState(true);
+  const [session, setSession] = useState(null);
+
+  useEffect(() => {
+    let mounted = true;
+    async function load() {
+      const { data } = await supabase.auth.getSession();
+      if (!mounted) return;
+      setSession(data.session);
+      setLoading(false);
+    }
+    load();
+    const { data: listener } = supabase.auth.onAuthStateChange((_event, session) => {
+      if (!mounted) return;
+      setSession(session);
+    });
+    return () => {
+      mounted = false;
+      listener.subscription?.unsubscribe?.();
+    };
+  }, []);
+
+  if (loading) return <div className="p-6">Checking authentication…</div>;
+  if (!session) return <Navigate to="/login" state={{ from: location.pathname }} replace />;
+  return children;
+}
+
 // -------------------- Main App --------------------
 export default function App() {
   return (
@@ -116,7 +149,15 @@ export default function App() {
         <Route path="/" element={<HomePage />} />
         <Route path="/category/:categorySlug" element={<CategoryPage />} />
         <Route path="/identify" element={<PestIdentificationPage />} />
-        <Route path="/admin" element={<AdminPage />} />
+        <Route path="/login" element={<LoginPage />} />
+        <Route
+          path="/admin"
+          element={
+            <ProtectedRoute>
+              <AdminPage />
+            </ProtectedRoute>
+          }
+        />
         {/* Add more routes as needed */}
       </Routes>
     </Router>
