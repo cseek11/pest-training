@@ -101,7 +101,7 @@ export default function LoginPage() {
   }
 
   return (
-      <div className="min-h-screen flex items-center justify-center drop-shadow bg-gray-50 p-4">
+      <div className="min-h-screen flex items-center justify-center shadow-lg bg-gray-50 p-4">
     <div className="w-full max-w-md rounded-2xl border bg-white p-6 shadow-sm">
       <h1 className="text-3xl font-extrabold mb-4 text-[#a880b9] text-center drop-shadow">
         VeroTraining
