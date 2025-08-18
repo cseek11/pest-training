@@ -22,7 +22,7 @@ export default function HomePage() {
         </div>
         <img src={veropestLogo} alt="VeroPest Logo" className="h-20 mb-6 drop-shadow-lg mx-auto" />
          <div className="flex flex-col items-center mb-8">
-          <h1 className="text-4xl font-extrabold tracking-tight mb-4 text-[#a880b9] drop-shadow-md">VeroTraining</h1>
+          <h1 className="text-4xl font-extrabold tracking-tight mb-4 text-[#a880b9] drop-shadow-md max-w-4xl bg-[#f8fafc]">VeroTraining</h1>
           <p className="text-lg font-medium text-[#4db848]">Empowering Learners for PA & National Certification</p>
         </div>
       </div>
