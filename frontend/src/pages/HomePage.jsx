@@ -17,10 +17,11 @@ export default function HomePage() {
   return (
     <>
       <div className="max-w-4xl items-center mx-auto text-center rounded-2xl mb-2 shadow-lg bg-[#404040]">
-        <div className="flex justify-end mb-2">
+       
+        <img src={veropestLogo} alt="VeroPest Logo" className="h-20 drop-shadow-lg mb-2 mx-auto" />
+         <div className="flex justify-end mb-2">
           <button onClick={handleLogout} className="text-sm mb-2 p-1 text-white/80 hover:text-white underline">Logout</button>
         </div>
-        <img src={veropestLogo} alt="VeroPest Logo" className="h-20 drop-shadow-lg mb-2 mx-auto" />
          <div className=" max-w-4xl mx-auto text-center rounded-1xl shadow-lg bg-[#f8fafc]">
           <h1 className="text-3xl  font-extrabold tracking-tight text-[#a880b9] drop-shadow-md ">VeroTraining</h1>
           <p className="text-lg font-medium drop-shadow-md p-2 text-[#4db848]">Empowering Growth Through Certification & Compliance</p>
