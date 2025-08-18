@@ -110,7 +110,7 @@ export default function LoginPage() {
             ? 'Enter a new password for your account.'
             : mode === 'request'
             ? 'Enter your email to receive a password reset link.'
-            : 'Sign in with your admin credentials.'}
+            : 'Sign in with your credentials.'}
         </p>
 
         {message && <div className="mb-3 text-sm text-green-700 bg-green-50 border border-green-200 rounded px-3 py-2">{message}</div>}
@@ -220,9 +220,7 @@ export default function LoginPage() {
         )}
 
         <div className="text-xs text-gray-500 mt-4 text-center">
-          <p>
-            <Link to="/" className="text-[#1A4D8F] hover:underline">Back to Home</Link>
-          </p>
+        
         </div>
       </div>
     </div>
