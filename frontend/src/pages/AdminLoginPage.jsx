@@ -9,6 +9,7 @@ export default function AdminLoginPage() {
   const [password, setPassword] = useState('');
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
+  const reason = location.state?.reason;
 
   const from = (location.state && location.state.from) || '/admin';
 
@@ -51,6 +52,11 @@ export default function AdminLoginPage() {
       <div className="w-full max-w-md rounded-2xl border bg-white p-6 shadow-sm">
         <h1 className="text-2xl font-bold mb-2 text-center">Admin Login</h1>
         <p className="text-sm text-gray-600 mb-6 text-center">Sign in with an admin account to continue.</p>
+        {reason === 'NOT_ADMIN' && !error && (
+          <div className="mb-3 text-sm text-orange-700 bg-orange-50 border border-orange-200 rounded px-3 py-2">
+            You must be an admin to access that page.
+          </div>
+        )}
         {error && <div className="mb-3 text-sm text-red-700 bg-red-50 border border-red-200 rounded px-3 py-2">{error}</div>}
         <form onSubmit={handleSubmit} className="space-y-4">
           <div>

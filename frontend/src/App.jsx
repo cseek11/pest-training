@@ -194,7 +194,7 @@ function AdminRoute({ children }) {
 
   if (loading) return <div className="p-6">Checking authentication…</div>;
   if (!session) return <Navigate to="/login" state={{ from: location.pathname }} replace />;
-  if (!allowed) return <Navigate to="/admin-login" state={{ from: location.pathname }} replace />;
+  if (!allowed) return <Navigate to="/admin-login" state={{ from: location.pathname, reason: 'NOT_ADMIN' }} replace />;
   return children;
 }
 
