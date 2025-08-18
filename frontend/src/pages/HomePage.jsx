@@ -6,7 +6,7 @@ export default function HomePage() {
   // Branding colors (from logo): green (#3CA35B), blue (#1A4D8F), neutral (#F5F7FA)
   return (
     <>
-      <div className="max-w-4xl items-center mx-auto p-8 text-center rounded-2xl shadow-lg bg-[#404040]">
+      <div className="max-w-4xl items-center mx-auto p-2 text-center rounded-2xl shadow-lg bg-[#404040]">
         <img src={veropestLogo} alt="VeroPest Logo" className="h-20 mb-6 drop-shadow-lg mx-auto" />
          <div className="flex flex-col items-center mb-8">
           <h1 className="text-3xl font-extrabold tracking-tight mb-3 text-[#a880b9] drop-shadow-md bg-[#f8fafc]">VeroTraining</h1>
