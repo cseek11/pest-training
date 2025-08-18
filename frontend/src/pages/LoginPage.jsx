@@ -103,7 +103,7 @@ export default function LoginPage() {
     <div className="min-h-screen flex items-center justify-center bg-gray-50 p-4">
       <div className="w-full max-w-md rounded-2xl border bg-white p-6 shadow-sm">
         <h1 className="text-2xl font-bold mb-2 text-center">
-          {mode === 'reset' ? 'Set New Password' : mode === 'request' ? 'Password Reset' : 'Admin Login'}
+          {mode === 'reset' ? 'Set New Password' : mode === 'request' ? 'Password Reset' : 'Login'}
         </h1>
         <p className="text-sm text-gray-600 mb-6 text-center">
           {mode === 'reset'
