@@ -62,9 +62,17 @@ export default function AdminPage(){
     }
   }
 
+  async function handleLogout(){
+    const { error } = await supabase.auth.signOut()
+    if (error) alert('Logout failed: ' + error.message)
+  }
+
   return (
     <div className="max-w-4xl mx-auto p-4">
-      <h1 className="text-2xl font-bold mb-4">Admin – CSV & Image Upload</h1>
+      <div className="flex items-center justify-between mb-4">
+        <h1 className="text-2xl font-bold">Admin – CSV & Image Upload</h1>
+        <button onClick={handleLogout} className="px-3 py-1.5 rounded-xl border shadow-sm hover:bg-gray-50">Log out</button>
+      </div>
 
       <label className="block mb-2">Target table</label>
       <select className="border rounded px-3 py-2 mb-4" value={table} onChange={e=>setTable(e.target.value)}>
