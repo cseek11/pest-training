@@ -141,21 +141,60 @@ function ProtectedRoute({ children }) {
   return children;
 }
 
+// -------------------- Admin Guard --------------------
+function AdminRoute({ children }) {
+  const location = useLocation();
+  const [loading, setLoading] = useState(true);
+  const [session, setSession] = useState(null);
+  const [allowed, setAllowed] = useState(false);
+
+  useEffect(() => {
+    let mounted = true;
+    async function load() {
+      const { data: sessionData } = await supabase.auth.getSession();
+      if (!mounted) return;
+      const sess = sessionData.session;
+      setSession(sess);
+
+      if (!sess) {
+        setLoading(false);
+        return;
+      }
+      const user = sess.user;
+      const adminEmails = (import.meta.env.VITE_ADMIN_EMAILS || '').split(',').map(s => s.trim()).filter(Boolean);
+      const userRole = user?.app_metadata?.role || user?.user_metadata?.role;
+      const isAdmin = userRole === 'admin' || (user?.email && adminEmails.includes(user.email));
+      setAllowed(!!isAdmin);
+      setLoading(false);
+    }
+    load();
+    const { data: listener } = supabase.auth.onAuthStateChange((_event, session) => {
+      setSession(session);
+    });
+    return () => listener.subscription?.unsubscribe?.();
+  }, []);
+
+  if (loading) return <div className="p-6">Checking authentication…</div>;
+  if (!session) return <Navigate to="/login" state={{ from: location.pathname }} replace />;
+  if (!allowed) return <Navigate to="/" replace />;
+  return children;
+}
+
 // -------------------- Main App --------------------
 export default function App() {
   return (
     <Router>
       <Routes>
-        <Route path="/" element={<HomePage />} />
-        <Route path="/category/:categorySlug" element={<CategoryPage />} />
-        <Route path="/identify" element={<PestIdentificationPage />} />
+        <Route path="/" element={<ProtectedRoute><HomePage /></ProtectedRoute>} />
+        <Route path="/category/:categorySlug" element={<ProtectedRoute><CategoryPage /></ProtectedRoute>} />
+        <Route path="/identify" element={<ProtectedRoute><PestIdentificationPage /></ProtectedRoute>} />
         <Route path="/login" element={<LoginPage />} />
         <Route
           path="/admin"
           element={
-            <ProtectedRoute>
+            <AdminRoute>
               <AdminPage />
-            </ProtectedRoute>
+            </AdminRoute>
           }
         />
         {/* Add more routes as needed */}
