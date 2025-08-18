@@ -20,10 +20,10 @@ export default function HomePage() {
         <div className="flex justify-end">
           <button onClick={handleLogout} className="text-sm text-white/80 hover:text-white underline">Logout</button>
         </div>
-        <img src={veropestLogo} alt="VeroPest Logo" className="h-20 mb-6 drop-shadow-lg mx-auto" />
+        <img src={veropestLogo} alt="VeroPest Logo" className="h-20 drop-shadow-lg mx-auto" />
          <div className="max-w-4xl items-center mx-auto text-center rounded-2xl shadow-lg bg-[#f8fafc]">
-          <h1 className="text-4xl  font-extrabold tracking-tight mb-4 text-[#a880b9] drop-shadow-md ">VeroTraining</h1>
-          <p className="text-lg font-medium text-[#4db848]">Empowering Learners for PA & National Certification</p>
+          <h1 className="text-4xl  font-extrabold tracking-tight text-[#a880b9] drop-shadow-md ">VeroTraining</h1>
+          <p className="text-lg font-medium drop-shadow-md text-[#4db848]">Empowering Growth Through Certification & Compliance</p>
         </div>
       </div>
       <div className="max-w-4xl mx-auto p-8 text-center rounded-2xl shadow-lg bg-[#F5F7FA]">
