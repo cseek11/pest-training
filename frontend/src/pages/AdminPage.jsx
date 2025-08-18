@@ -71,7 +71,7 @@ export default function AdminPage(){
     <div className="max-w-4xl mx-auto p-4">
       <div className="flex items-center justify-between mb-4">
         <h1 className="text-2xl font-bold">Admin – CSV & Image Upload</h1>
-        <button onClick={handleLogout} className="px-3 py-1.5 rounded-xl border shadow-sm hover:bg-gray-50">Log out</button>
+        <button onClick={handleLogout} className="px-3 py-1.5 rounded-xl border shadow-sm hover:bg-gray-50" aherf="/">Log out</button>
       </div>
 
       <label className="block mb-2">Target table</label>
