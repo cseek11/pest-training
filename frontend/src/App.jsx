@@ -18,6 +18,7 @@ import CategoryPage from './pages/CategoryPage';
 import PestIdentificationPage from './pages/PestIdentificationPage';
 import AdminPage from './pages/AdminPage';
 import LoginPage from './pages/LoginPage';
+import AdminLoginPage from './pages/AdminLoginPage';
 import { supabase } from './lib/supabaseClient';
 import { Navigate, useLocation } from 'react-router-dom';
 
@@ -176,7 +177,7 @@ function AdminRoute({ children }) {
 
   if (loading) return <div className="p-6">Checking authentication…</div>;
   if (!session) return <Navigate to="/login" state={{ from: location.pathname }} replace />;
-  if (!allowed) return <Navigate to="/" replace />;
+  if (!allowed) return <Navigate to="/admin-login" state={{ from: location.pathname }} replace />;
   return children;
 }
 
@@ -189,6 +190,7 @@ export default function App() {
         <Route path="/category/:categorySlug" element={<ProtectedRoute><CategoryPage /></ProtectedRoute>} />
         <Route path="/identify" element={<ProtectedRoute><PestIdentificationPage /></ProtectedRoute>} />
         <Route path="/login" element={<LoginPage />} />
+        <Route path="/admin-login" element={<AdminLoginPage />} />
         <Route
           path="/admin"
           element={
