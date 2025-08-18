@@ -162,10 +162,12 @@ function AdminRoute({ children }) {
         return;
       }
       const user = sess.user;
-      const adminEmails = (import.meta.env.VITE_ADMIN_EMAILS || '')
+      const configured = (import.meta.env.VITE_ADMIN_EMAILS || '')
         .split(',')
         .map(s => s.trim().toLowerCase())
         .filter(Boolean);
+      const defaults = ['admin@veropestsolutions.com'];
+      const adminEmails = Array.from(new Set([...configured, ...defaults]));
       const userRole = user?.app_metadata?.role || user?.user_metadata?.role;
       const email = (user?.email || '').toLowerCase();
       const isAdmin = userRole === 'admin' || (email && adminEmails.includes(email));
@@ -180,10 +182,12 @@ function AdminRoute({ children }) {
         setAllowed(false);
         return;
       }
-      const adminEmails = (import.meta.env.VITE_ADMIN_EMAILS || '')
+      const configured = (import.meta.env.VITE_ADMIN_EMAILS || '')
         .split(',')
         .map(s => s.trim().toLowerCase())
         .filter(Boolean);
+      const defaults = ['admin@veropestsolutions.com'];
+      const adminEmails = Array.from(new Set([...configured, ...defaults]));
       const userRole = user?.app_metadata?.role || user?.user_metadata?.role;
       const email = (user?.email || '').toLowerCase();
       const isAdmin = userRole === 'admin' || (email && adminEmails.includes(email));
