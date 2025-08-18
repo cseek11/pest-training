@@ -1,16 +1,29 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { CATEGORIES, PA_CERT_CATEGORIES } from '../categories';
 import veropestLogo from '../assets/branding/veropest_logo.png';
+import { supabase } from '../lib/supabaseClient';
 export default function HomePage() {
+  const navigate = useNavigate();
+  async function handleLogout(){
+    const { error } = await supabase.auth.signOut();
+    if (error) {
+      alert('Logout failed: ' + error.message);
+      return;
+    }
+    navigate('/login', { replace: true });
+  }
   // Branding colors (from logo): green (#3CA35B), blue (#1A4D8F), neutral (#F5F7FA)
   return (
     <>
-      <div className="max-w-4xl items-center mx-auto p-2 text-center rounded-2xl shadow-lg bg-[#404040]">
+      <div className="max-w-4xl items-center mx-auto p-8 text-center rounded-2xl shadow-lg bg-[#404040]">
+        <div className="flex justify-end">
+          <button onClick={handleLogout} className="text-sm text-white/80 hover:text-white underline">Logout</button>
+        </div>
         <img src={veropestLogo} alt="VeroPest Logo" className="h-20 mb-6 drop-shadow-lg mx-auto" />
          <div className="flex flex-col items-center mb-8">
-          <h1 className="text-3xl font-extrabold tracking-tight mb-3 text-[#a880b9] max-w-4xl items-center mx-auto p-2 text-center rounded-2xl shadow-lg drop-shadow-md bg-[#f8fafc]">VeroTraining</h1>
-          <p className="text-md font-medium text-[#4db848]">Empowering Learners for PA & National Certification</p>
+          <h1 className="text-4xl font-extrabold tracking-tight mb-4 text-[#a880b9] drop-shadow-md">VeroTraining</h1>
+          <p className="text-lg font-medium text-[#4db848]">Empowering Learners for PA & National Certification</p>
         </div>
       </div>
       <div className="max-w-4xl mx-auto p-8 text-center rounded-2xl shadow-lg bg-[#F5F7FA]">
