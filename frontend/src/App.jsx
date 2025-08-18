@@ -16,6 +16,7 @@ import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import HomePage from './pages/HomePage';
 import CategoryPage from './pages/CategoryPage';
 import PestIdentificationPage from './pages/PestIdentificationPage';
+import AdminPage from './pages/AdminPage';
 
 // -------------------- Constants & Utils --------------------
 const FALLBACK_FLASHCARDS = [];
@@ -115,6 +116,7 @@ export default function App() {
         <Route path="/" element={<HomePage />} />
         <Route path="/category/:categorySlug" element={<CategoryPage />} />
         <Route path="/identify" element={<PestIdentificationPage />} />
+        <Route path="/admin" element={<AdminPage />} />
         {/* Add more routes as needed */}
       </Routes>
     </Router>
