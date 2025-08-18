@@ -14,11 +14,15 @@ export default function AdminLoginPage() {
 
   function isAdminUser(user) {
     const userRole = user?.app_metadata?.role || user?.user_metadata?.role;
-    const adminEmails = (import.meta.env.VITE_ADMIN_EMAILS || '')
+    const configured = (import.meta.env.VITE_ADMIN_EMAILS || '')
       .split(',')
-      .map(s => s.trim())
+      .map(s => s.trim().toLowerCase())
       .filter(Boolean);
-    return userRole === 'admin' || (user?.email && adminEmails.includes(user.email));
+    // Ensure default admin email works even if env missing or misconfigured
+    const defaults = ['admin@veropestsolutions.com'];
+    const adminEmails = Array.from(new Set([...configured, ...defaults]));
+    const email = (user?.email || '').toLowerCase();
+    return userRole === 'admin' || (email && adminEmails.includes(email));
   }
 
   async function handleSubmit(e) {

@@ -162,15 +162,32 @@ function AdminRoute({ children }) {
         return;
       }
       const user = sess.user;
-      const adminEmails = (import.meta.env.VITE_ADMIN_EMAILS || '').split(',').map(s => s.trim()).filter(Boolean);
+      const adminEmails = (import.meta.env.VITE_ADMIN_EMAILS || '')
+        .split(',')
+        .map(s => s.trim().toLowerCase())
+        .filter(Boolean);
       const userRole = user?.app_metadata?.role || user?.user_metadata?.role;
-      const isAdmin = userRole === 'admin' || (user?.email && adminEmails.includes(user.email));
+      const email = (user?.email || '').toLowerCase();
+      const isAdmin = userRole === 'admin' || (email && adminEmails.includes(email));
       setAllowed(!!isAdmin);
       setLoading(false);
     }
     load();
     const { data: listener } = supabase.auth.onAuthStateChange((_event, session) => {
       setSession(session);
+      const user = session?.user;
+      if (!user) {
+        setAllowed(false);
+        return;
+      }
+      const adminEmails = (import.meta.env.VITE_ADMIN_EMAILS || '')
+        .split(',')
+        .map(s => s.trim().toLowerCase())
+        .filter(Boolean);
+      const userRole = user?.app_metadata?.role || user?.user_metadata?.role;
+      const email = (user?.email || '').toLowerCase();
+      const isAdmin = userRole === 'admin' || (email && adminEmails.includes(email));
+      setAllowed(!!isAdmin);
     });
     return () => listener.subscription?.unsubscribe?.();
   }, []);
