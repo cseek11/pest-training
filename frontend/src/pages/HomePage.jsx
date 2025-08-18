@@ -9,8 +9,8 @@ export default function HomePage() {
       <div className="max-w-4xl items-center mx-auto p-8 text-center rounded-2xl shadow-lg bg-[#404040]">
         <img src={veropestLogo} alt="VeroPest Logo" className="h-20 mb-6 drop-shadow-lg mx-auto" />
          <div className="flex flex-col items-center mb-8">
-          <h1 className="text-4xl font-extrabold tracking-tight mb-4 text-[#a880b9] drop-shadow-md">VeroTraining</h1>
-          <p className="text-lg font-medium text-[#4db848]">Empowering Learners for PA & National Certification</p>
+          <h1 className="text-3xl font-extrabold tracking-tight mb-4 text-[#a880b9] drop-shadow-md">VeroTraining</h1>
+          <p className="text-md font-medium text-[#4db848]">Empowering Learners for PA & National Certification</p>
         </div>
       </div>
       <div className="max-w-4xl mx-auto p-8 text-center rounded-2xl shadow-lg bg-[#F5F7FA]">
@@ -53,7 +53,7 @@ export default function HomePage() {
           <p className="mb-4 text-gray-700 text-base">Pest identification and admin features.</p>
           <div className="grid gap-4 grid-cols-1 md:grid-cols-3">
             <Link to="/identify" className="block px-6 py-5 rounded-2xl bg-[#4db848] text-white font-semibold shadow hover:bg-[#399a38] transition-all text-lg">Pest Identification</Link>
-            <Link to="/admin" className="block px-6 py-5 rounded-2xl bg-gray-500 text-white font-semibold shadow hover:bg-gray-600 transition-all text-lg">Admin</Link>
+            <Link to="/admin-login" className="block px-6 py-5 rounded-2xl bg-gray-500 text-white font-semibold shadow hover:bg-gray-600 transition-all text-lg">Admin</Link>
           </div>
         </section>
       </div>
